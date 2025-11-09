@@ -1,7 +1,12 @@
 import json
 import os
 import sys
-from scripts.ollama_client import OllamaClient, test_connection
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+parent_dir = os.path.dirname(current_dir)
+sys.path.append(parent_dir)
+
+from ollama_client import OllamaClient, test_connection
 
 class RoadSafetyGPT:
     def __init__(self):
@@ -36,7 +41,7 @@ class RoadSafetyGPT:
             context += f"Problem Type: {intervention['problem_type']}\n"
             context += f"Category: {intervention['category']}\n"
             context += f"Intervention: {intervention['intervention_name']}\n"
-            context += f"Description: {intervention['description'][:300]}...\n"  
+            context += f"Description: {intervention['description'][:300]}...\n"  # First 300 chars
             context += f"Standard: {intervention['standard_code']} Clause {intervention['clause']}\n"
             context += f"Road Types: {', '.join(intervention['road_types'])}\n"
             context += f"Environments: {', '.join(intervention['environments'])}\n"
@@ -56,7 +61,6 @@ class RoadSafetyGPT:
             for keyword in intervention['keywords']:
                 if keyword in query_lower:
                     score += 1
-            
             if intervention['intervention_name'].lower() in query_lower:
                 score += 2
             
@@ -92,15 +96,13 @@ class RoadSafetyGPT:
             print("\n" + "=" * 40)
             print("Analyzing your road safety issue...")
             print("=" * 40)
-            
-            # Get AI response
             response = self.client.query_road_safety(
                 user_input, 
                 database_context, 
                 self.system_prompt
             )
             
-            print("\nRECOMMENDED INTERVENTIONS:")
+            print("\n💡 RECOMMENDED INTERVENTIONS:")
             print("=" * 40)
             print(response)
             print("\n" + "=" * 40)
