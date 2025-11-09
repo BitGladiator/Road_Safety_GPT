@@ -10,14 +10,11 @@ def detect_encoding(file_path):
         return result['encoding']
 
 def process_database():
-    # Detect file encoding first
     csv_file_path = 'data/raw_database/GPT_Input_DB(Sheet1).csv'
     
     try:
         encoding = detect_encoding(csv_file_path)
         print(f"Detected encoding: {encoding}")
-        
-        # Try reading with detected encoding
         df = pd.read_csv(csv_file_path, encoding=encoding)
         
     except UnicodeDecodeError:
@@ -41,7 +38,6 @@ def process_database():
     processed_data = []
     
     for _, row in df.iterrows():
-        # Extract key information and structure it for the AI
         intervention = {
             "intervention_id": row['S. No.'],
             "problem_type": row['problem'],
@@ -50,14 +46,11 @@ def process_database():
             "description": row['data'],
             "standard_code": row['code'],
             "clause": row['clause'],
-            # These will help the AI match problems to solutions
             "keywords": extract_keywords(row['problem'], row['type'], row['data']),
             "road_types": infer_road_types(row['data'], row['category']),
             "environments": infer_environments(row['data'], row['category'])
         }
         processed_data.append(intervention)
-    
-    # Save as JSON
     with open('data/processed_database.json', 'w', encoding='utf-8') as f:
         json.dump(processed_data, f, indent=2)
     
@@ -69,16 +62,10 @@ def process_database():
 def extract_keywords(problem, intervention_type, description):
     """Extract relevant keywords for better matching"""
     keywords = []
-    
-    # Add problem types
     if isinstance(problem, str):
         keywords.extend(problem.lower().split())
-    
-    # Add intervention types
     if isinstance(intervention_type, str):
         keywords.extend(intervention_type.lower().split())
-    
-    # Add common terms from description
     common_terms = ['speed', 'pedestrian', 'crossing', 'school', 'hospital', 'stop', 
                    'warning', 'mandatory', 'informatory', 'prohibitory', 'urban', 
                    'rural', 'highway', 'expressway', 'residential', 'commercial',
@@ -91,7 +78,7 @@ def extract_keywords(problem, intervention_type, description):
             if term in description_lower:
                 keywords.append(term)
     
-    return list(set(keywords))  # Remove duplicates
+    return list(set(keywords)) 
 
 def infer_road_types(description, category):
     """Infer suitable road types from description"""
@@ -109,7 +96,6 @@ def infer_road_types(description, category):
         if 'school' in desc_lower:
             road_types.extend(['School Zone', 'Urban Arterial', 'Collector Road'])
     
-    # Default based on category
     if not road_types:
         if isinstance(category, str):
             if 'Road Sign' in category:
@@ -140,8 +126,7 @@ def infer_environments(description, category):
             environments.append('High Pedestrian Activity')
         if 'intersection' in desc_lower or 'crossing' in desc_lower:
             environments.append('Intersections')
-    
-    # Default based on category
+
     if not environments:
         environments = ['General']
     
