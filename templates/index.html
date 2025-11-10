@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <title>Road Safety GPT</title>
     <style>
         * {
@@ -363,27 +364,45 @@
 
         let chatHistory = [];
 
-        function sendMessage() {
+        async function sendMessage() {
             const input = document.getElementById('userInput');
             const message = input.value.trim();
             
             if (!message) return;
+            
             document.querySelector('.welcome').style.display = 'none';
             addMessage(message, 'user');
             input.value = '';
+            
             const loading = document.getElementById('loadingIndicator');
             const sendBtn = document.getElementById('sendBtn');
             loading.classList.add('active');
             sendBtn.disabled = true;
-            setTimeout(() => {
-                const response = `Based on IRC standards, for ${message.toLowerCase()}, I recommend:\n\n• Inspection of existing installations\n• Proper signage as per IRC:67-2022\n• Regular maintenance checks\n\nReference: IRC standards clause 14.4`;
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ message: message })
+                });
                 
-                addMessage(response, 'assistant');
-                addToHistory(message, response);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 
+                const data = await response.json();
+                addMessage(data.response, 'assistant');
+                addToHistory(message, data.response);
+                
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, there was an error processing your request. Please make sure Ollama is running.', 'assistant');
+            } finally {
                 loading.classList.remove('active');
                 sendBtn.disabled = false;
-            }, 1500);
+            }
         }
 
         function addMessage(text, sender) {
@@ -397,7 +416,11 @@
             
             const content = document.createElement('div');
             content.className = 'content';
-            content.textContent = text;
+            if (sender === 'assistant' && typeof marked !== 'undefined') {
+                content.innerHTML = marked.parse(text);
+            } else {
+                content.textContent = text;
+            }
             
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);

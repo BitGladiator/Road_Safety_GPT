@@ -39,58 +39,81 @@ class RoadSafetyGPT:
         except FileNotFoundError:
             return "You are a Road Safety Expert AI assistant."
     
-    def prepare_database_context(self):
-        """Prepare the database context for the AI"""
-        context = "ROAD SAFETY INTERVENTIONS DATABASE:\n\n"
+    def prepare_database_context(self, user_query=""):
+        """Prepare focused database context for the AI"""
+        # Get relevant interventions based on query
+        keyword_matches = self.search_interventions(user_query)
+        relevant_interventions = keyword_matches[:5] if keyword_matches else self.database[:8]
         
-        for intervention in self.database:
-            context += f"ID: {intervention['intervention_id']}\n"
-            context += f"Problem Type: {intervention['problem_type']}\n"
-            context += f"Category: {intervention['category']}\n"
-            context += f"Intervention: {intervention['intervention_name']}\n"
-            context += f"Description: {intervention['description'][:300]}...\n"
-            context += f"Standard: {intervention['standard_code']} Clause {intervention['clause']}\n"
-            context += f"Road Types: {', '.join(intervention['road_types'])}\n"
-            context += f"Environments: {', '.join(intervention['environments'])}\n"
-            context += "-" * 50 + "\n"
+        context = "RELEVANT ROAD SAFETY INTERVENTIONS:\n\n"
+        
+        for intervention in relevant_interventions:
+            context += f"🔹 {intervention['intervention_name']}\n"
+            context += f"   Problem Type: {intervention['problem_type']}\n"
+            context += f"   Category: {intervention['category']}\n"
+            context += f"   Standard: {intervention['standard_code']} Clause {intervention['clause']}\n"
+            
+            # Include full description for better context
+            context += f"   Description: {intervention['description']}\n"
+            context += "─" * 50 + "\n"
         
         return context
     
     def search_interventions(self, user_query):
-        """Simple keyword-based search as fallback"""
+        """Improved keyword-based search - FIXED INDENTATION"""
         query_lower = user_query.lower()
         matches = []
         
         for intervention in self.database:
             score = 0
+            
+            # Exact problem type match (highest priority)
             if intervention['problem_type'].lower() in query_lower:
-                score += 3
-            for keyword in intervention['keywords']:
-                if keyword in query_lower:
-                    score += 1
+                score += 10
+            
+            # Intervention name match
             if intervention['intervention_name'].lower() in query_lower:
-                score += 2
+                score += 8
+            
+            # Category match
+            if intervention['category'].lower() in query_lower:
+                score += 5
+            
+            # Keyword matches
+            for keyword in intervention['keywords']:
+                if keyword.lower() in query_lower:
+                    score += 2
+            
+            # Road type match
+            for road_type in intervention['road_types']:
+                if road_type.lower() in query_lower:
+                    score += 3
+            
+            # Environment match
+            for env in intervention['environments']:
+                if env.lower() in query_lower:
+                    score += 3
             
             if score > 0:
                 matches.append((score, intervention))
         
+        # FIXED: This was inside the loop!
         matches.sort(key=lambda x: x[0], reverse=True)
-        return [match[1] for match in matches[:3]]
+        return [match[1] for match in matches]
     
     def get_response(self, user_query):
-        """Get AI response for user query"""
-        database_context = self.prepare_database_context()
-        
+        """Get AI response for user query - FIXED LOGIC"""
+        keyword_matches = self.search_interventions(user_query)
+        focused_context = self.prepare_database_context(user_query)
         response = self.client.query_road_safety(
             user_query, 
-            database_context, 
+            focused_context, 
             self.system_prompt
         )
-        keyword_matches = self.search_interventions(user_query)
         
         return {
             'ai_response': response,
-            'keyword_matches': keyword_matches
+            'keyword_matches': keyword_matches[:3]  
         }
 
 road_safety_gpt = RoadSafetyGPT()
@@ -111,6 +134,7 @@ def chat():
         
         if not user_message:
             return jsonify({'error': 'Empty message'}), 400
+        
         result = road_safety_gpt.get_response(user_message)
         response_text = result['ai_response']
         if result['keyword_matches']:
@@ -119,6 +143,7 @@ def chat():
                 response_text += f"\n{i}. **{match['intervention_name']}** ({match['category']})\n"
                 response_text += f"   - Problem: {match['problem_type']}\n"
                 response_text += f"   - Standard: {match['standard_code']} {match['clause']}\n"
+        
         if 'chat_history' not in session:
             session['chat_history'] = []
         
@@ -159,6 +184,21 @@ def status():
         'database_loaded': len(road_safety_gpt.database) > 0,
         'intervention_count': len(road_safety_gpt.database)
     })
+@app.route('/api/debug', methods=['POST'])
+def debug_query():
+    """Debug endpoint to see what the AI receives"""
+    data = request.get_json()
+    user_message = data.get('message', '').strip()
+    
+    database_context = road_safety_gpt.prepare_database_context(user_message)
+    keyword_matches = road_safety_gpt.search_interventions(user_message)
+    
+    return jsonify({
+        'user_query': user_message,
+        'database_context_preview': database_context[:500] + "..." if len(database_context) > 500 else database_context,
+        'keyword_matches_count': len(keyword_matches),
+        'keyword_matches_sample': [match['intervention_name'] for match in keyword_matches[:3]] if keyword_matches else []
+    })
 
 if __name__ == '__main__':
     print("=" * 60)
@@ -175,4 +215,4 @@ if __name__ == '__main__':
     else:
         print("\nError: Cannot connect to Ollama")
         print("Please start Ollama with: ollama serve")
-        print("And make sure llama3.1:8b model is pulled: ollama pull llama3.1:8b")
+        print("And make sure phi3:mini model is pulled: ollama pull phi3:mini")
