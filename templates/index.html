@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Safety GPT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #10a37f;
+            --primary-dark: #0d8c6c;
+            --sidebar-bg: #202123;
+            --chat-bg: #343541;
+            --message-user-bg: #444654;
+            --message-assistant-bg: #343541;
+            --text-primary: #ffffff;
+            --text-secondary: #d1d5db;
+            --text-muted: #9ca3af;
+            --border-color: #4b5563;
+            --input-bg: #40414f;
+            --hover-bg: #2a2b32;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--chat-bg);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            border-right: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .new-chat-btn {
+            margin: 8px;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .new-chat-btn:hover {
+            background: var(--hover-bg);
+        }
+
+        .history {
+            flex: 1;
+            overflow-y: auto;
+            padding: 8px;
+        }
+
+        .history-item {
+            padding: 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 2px;
+            transition: background 0.2s;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .history-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .history-item.active {
+            background: var(--hover-bg);
+        }
+
+        .sidebar-footer {
+            padding: 12px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background: var(--hover-bg);
+        }
+
+        .user-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 2px;
+            background: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Main Chat Area */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            position: relative;
+            min-width: 0;
+        }
+
+        .chat-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .model-badge {
+            background: var(--primary);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            display: flex;
+            gap: 24px;
+            padding: 24px;
+            border-bottom: 1px solid var(--border-color);
+            min-height: 120px;
+            align-items: flex-start;
+        }
+
+        .message:last-child {
+            border-bottom: none;
+        }
+
+        .message.user {
+            background: var(--message-user-bg);
+        }
+
+        .message.assistant {
+            background: var(--message-assistant-bg);
+        }
+
+        .avatar {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .user .avatar {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .assistant .avatar {
+            background: #5436da;
+            border-radius: 2px;
+        }
+
+        .avatar svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        .message-content {
+            flex: 1;
+            line-height: 1.6;
+            font-size: 15px;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            min-height: 20px;
+            padding-top: 4px;
+        }
+
+        .message-content code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+
+        .message-content pre {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 16px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .message-content pre code {
+            background: none;
+            padding: 0;
+        }
+
+        /* Input Area - FIXED */
+        .input-container {
+            padding: 24px;
+            position: relative;
+            flex-shrink: 0;
+            border-top: 1px solid var(--border-color);
+            background: var(--chat-bg);
+        }
+
+        .input-wrapper {
+            position: relative;
+            max-width: 768px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        #userInput {
+            flex: 1;
+            padding: 12px 45px 12px 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 15px;
+            resize: none;
+            min-height: 56px;
+            max-height: 200px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        #userInput:focus {
+            border-color: var(--primary);
+        }
+
+        #sendBtn {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            background: var(--primary);
+            border: none;
+            border-radius: 4px;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            z-index: 10;
+        }
+
+        #sendBtn:hover:not(:disabled) {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        #sendBtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #sendBtn svg {
+            width: 16px;
+            height: 16px;
+            fill: white;
+        }
+
+        /* Loading State */
+        .loading {
+            display: none;
+            align-items: flex-start;
+            gap: 24px;
+            padding: 24px;
+            background: var(--message-assistant-bg);
+            border-bottom: 1px solid var(--border-color);
+            min-height: 120px;
+        }
+
+        .loading.active {
+            display: flex;
+        }
+
+        .loading .avatar {
+            background: #5436da;
+            border-radius: 2px;
+            margin-top: 4px;
+        }
+
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+            height: 30px;
+        }
+
+        .typing-dot {
+            width: 4px;
+            height: 4px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 40px;
+            background: var(--chat-bg);
+        }
+
+        .welcome-icon {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 24px;
+            color: var(--primary);
+        }
+
+        .welcome-title {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .welcome-subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+            line-height: 1.5;
+        }
+
+        .suggestions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .suggestion-btn {
+            padding: 16px;
+            background: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 14px;
+            line-height: 1.4;
+            font-family: inherit;
+        }
+
+        .suggestion-btn:hover {
+            background: var(--hover-bg);
+            border-color: var(--primary);
+        }
+
+        /* Scrollbar */
+        .messages-container::-webkit-scrollbar,
+        .history::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .messages-container::-webkit-scrollbar-track,
+        .history::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb,
+        .history::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .messages-container::-webkit-scrollbar-thumb:hover,
+        .history::-webkit-scrollbar-thumb:hover {
+            background: var(--text-muted);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .sidebar .text {
+                display: none;
+            }
+            
+            .suggestions {
+                grid-template-columns: 1fr;
+            }
+            
+            .message {
+                padding: 16px;
+                gap: 16px;
+            }
+            
+            .input-container {
+                padding: 16px;
+            }
+        }
+
+        /* Empty state when no messages */
+        .empty-message {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <button class="new-chat-btn" onclick="newChat()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M14.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h13zm-13-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-13z"/>
+                <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+            </svg>
+            <span class="text">New chat</span>
+        </button>
+
+        <div class="history" id="historyList">
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="user-avatar">U</div>
+                <div class="user-info">
+                    <div class="user-name">User</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="main">
+        <div class="chat-header">
+            <div class="model-badge">Road Safety GPT</div>
+            <div class="status" id="statusText">Analyzing IRC standards...</div>
+        </div>
+
+        <div class="messages-container" id="messagesContainer">
+            <div class="welcome-screen" id="welcomeScreen">
+                <div class="welcome-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 5.5V7H9V5.5L3 7V9L9 10.5V12H15V10.5L21 9ZM15 13H9V14.5L3 16V18L9 19.5V21H15V19.5L21 18V16L15 14.5V13Z"/>
+                    </svg>
+                </div>
+                <h1 class="welcome-title">Road Safety GPT</h1>
+                <p class="welcome-subtitle">Expert recommendations for road safety interventions based on IRC standards and best practices</p>
+                <div class="suggestions">
+                    <button class="suggestion-btn" onclick="sendSuggestion('There are damaged STOP signs at intersections')">
+                        Damaged STOP signs at intersections
+                    </button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('Faded pedestrian crossing markings near schools')">
+                        Faded road markings near schools
+                    </button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('Need speed control measures in residential areas')">
+                        Speed control in residential areas
+                    </button>
+                    <button class="suggestion-btn" onclick="sendSuggestion('Missing warning signs on curved roads')">
+                        Missing warning signs on curves
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingIndicator">
+            <div class="avatar">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 12A8 8 0 1 1 4 12a8 8 0 0 1 16 0z"/>
+                </svg>
+            </div>
+            <div class="typing-indicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+
+        <div class="input-container">
+            <div class="input-wrapper">
+                <textarea 
+                    id="userInput" 
+                    placeholder="Describe the road safety problem..." 
+                    rows="1"
+                    onkeydown="handleKeyDown(event)"
+                    oninput="autoResize(this)"
+                ></textarea>
+                <button id="sendBtn" onclick="sendMessage()">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const icons = {
+            user: `<svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+            </svg>`,
+            
+            assistant: `<svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
+            </svg>`,
+            
+            send: `<svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+            </svg>`
+        };
+
+        let chatHistory = [];
+
+        function autoResize(textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = Math.min(textarea.scrollHeight, 200) + 'px';
+        }
+
+        async function checkStatus() {
+            try {
+                const response = await fetch('/api/status');
+                const data = await response.json();
+                const statusText = document.getElementById('statusText');
+                
+                if (data.ollama_connected && data.database_loaded) {
+                    statusText.textContent = `Ready • ${data.intervention_count} interventions loaded`;
+                } else {
+                    statusText.textContent = 'Connecting...';
+                }
+            } catch (error) {
+                console.error('Status check failed:', error);
+                document.getElementById('statusText').textContent = 'Offline';
+            }
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('userInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            document.getElementById('welcomeScreen').style.display = 'none';
+            addMessage(message, 'user');
+            input.value = '';
+            input.style.height = 'auto';
+            const loading = document.getElementById('loadingIndicator');
+            const sendBtn = document.getElementById('sendBtn');
+            loading.classList.add('active');
+            sendBtn.disabled = true;
+            
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ message: message })
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    addMessage(`Error: ${data.error}`, 'assistant');
+                } else {
+                    addMessage(data.response, 'assistant');
+                    addToHistory(message, data.response);
+                }
+            } catch (error) {
+                addMessage(`Error: ${error.message}`, 'assistant');
+            } finally {
+                loading.classList.remove('active');
+                sendBtn.disabled = false;
+                input.focus();
+            }
+        }
+
+        function addMessage(text, sender) {
+            const container = document.getElementById('messagesContainer');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.innerHTML = sender === 'user' ? icons.user : icons.assistant;
+            
+            const content = document.createElement('div');
+            content.className = 'message-content';
+            let formattedText = text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/`(.*?)`/g, '<code>$1</code>')
+                .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>');
+            
+            content.innerHTML = formattedText;
+            
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+            container.appendChild(messageDiv);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function addToHistory(userMessage, assistantMessage) {
+            const historyItem = {
+                user: userMessage,
+                assistant: assistantMessage,
+                timestamp: new Date().toISOString()
+            };
+            
+            chatHistory.push(historyItem);
+            updateHistoryUI();
+        }
+
+        function updateHistoryUI() {
+            const historyList = document.getElementById('historyList');
+            historyList.innerHTML = '';
+            
+            chatHistory.slice().reverse().forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M14.5 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-13a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h13zm-13-1a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h13a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2h-13z"/>
+                        <path d="M3 8.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0 4a.5.5 0 0 1 .5-.5h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5z"/>
+                    </svg>
+                    <span class="text">${item.user.substring(0, 30)}${item.user.length > 30 ? '...' : ''}</span>
+                `;
+                
+                historyItem.onclick = () => loadChatFromHistory(chatHistory.length - 1 - index);
+                historyList.appendChild(historyItem);
+            });
+        }
+
+        function loadChatFromHistory(index) {
+            const item = chatHistory[index];
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = '';
+            document.getElementById('welcomeScreen').style.display = 'none';
+            
+            addMessage(item.user, 'user');
+            addMessage(item.assistant, 'assistant');
+        }
+
+        function newChat() {
+            const container = document.getElementById('messagesContainer');
+            container.innerHTML = `
+                <div class="welcome-screen" id="welcomeScreen">
+                    <div class="welcome-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 5.5V7H9V5.5L3 7V9L9 10.5V12H15V10.5L21 9ZM15 13H9V14.5L3 16V18L9 19.5V21H15V19.5L21 18V16L15 14.5V13Z"/>
+                        </svg>
+                    </div>
+                    <h1 class="welcome-title">Road Safety GPT</h1>
+                    <p class="welcome-subtitle">Expert recommendations for road safety interventions based on IRC standards and best practices</p>
+                    <div class="suggestions">
+                        <button class="suggestion-btn" onclick="sendSuggestion('There are damaged STOP signs at intersections')">
+                            Damaged STOP signs at intersections
+                        </button>
+                        <button class="suggestion-btn" onclick="sendSuggestion('Faded pedestrian crossing markings near schools')">
+                            Faded road markings near schools
+                        </button>
+                        <button class="suggestion-btn" onclick="sendSuggestion('Need speed control measures in residential areas')">
+                            Speed control in residential areas
+                        </button>
+                        <button class="suggestion-btn" onclick="sendSuggestion('Missing warning signs on curved roads')">
+                            Missing warning signs on curves
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function sendSuggestion(text) {
+            document.getElementById('userInput').value = text;
+            sendMessage();
+        }
+
+        function handleKeyDown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+        window.onload = () => {
+            checkStatus();
+            setInterval(checkStatus, 30000);
+            document.getElementById('userInput').focus();
+        };
+    </script>
+</body>
+</html>

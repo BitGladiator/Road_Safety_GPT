@@ -56,16 +56,16 @@ def test_connection():
             print("Available models:", model_names)
             
             if any("mistral" in name.lower() for name in model_names):
-                print("✓ Mistral model found!")
+                print("Mistral model found!")
                 return True
             else:
-                print("✗ Mistral model not found. Available models:", model_names)
+                print("Mistral model not found. Available models:", model_names)
                 return False
         else:
             print("✗ Cannot connect to Ollama")
             return False
     except Exception as e:
-        print(f"✗ Connection error: {e}")
+        print(f"Connection error: {e}")
         print("Please make sure Ollama is running with: ollama serve")
         return False
 
