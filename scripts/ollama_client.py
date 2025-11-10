@@ -4,7 +4,7 @@ import json
 class OllamaClient:
     def __init__(self, base_url="http://localhost:11434"):
         self.base_url = base_url
-        self.model = "mistral" 
+        self.model = "llama3.1:8b"
     
     def query_road_safety(self, user_query, database_context, system_prompt):
         """
@@ -46,7 +46,7 @@ Please analyze the road safety problem and recommend appropriate interventions f
             return f"Error: {str(e)}"
 
 def test_connection():
-    """Test if Ollama is running and mistral model is available"""
+    """Test if Ollama is running and llama3.1:8b model is available"""
     client = OllamaClient()
     try:
         response = requests.get(f"{client.base_url}/api/tags", timeout=10)
@@ -55,11 +55,11 @@ def test_connection():
             model_names = [model.get("name", "") for model in models]
             print("Available models:", model_names)
             
-            if any("mistral" in name.lower() for name in model_names):
-                print("Mistral model found!")
+            if any("llama3.1:8b" in name.lower() for name in model_names):
+                print("llama3.1:8b model found!")
                 return True
             else:
-                print("Mistral model not found. Available models:", model_names)
+                print("llama3.1:8b model not found. Available models:", model_names)
                 return False
         else:
             print("✗ Cannot connect to Ollama")

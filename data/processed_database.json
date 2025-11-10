@@ -8,12 +8,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.4",
     "keywords": [
-      "height",
       "sign",
+      "height",
+      "damaged",
       "speed",
       "visibility",
-      "stop",
-      "damaged"
+      "stop"
     ],
     "road_types": [
       "All Road Types"
@@ -31,21 +31,21 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.10.6",
     "keywords": [
-      "prohibitory",
-      "highway",
-      "issue",
-      "height",
       "pedestrian",
+      "highway",
+      "minimum",
       "sign",
+      "height",
+      "prohibitory",
       "speed",
       "visibility",
       "limit",
-      "minimum"
+      "issue"
     ],
     "road_types": [
-      "Highway",
       "Expressway",
-      "Rural Road"
+      "Rural Road",
+      "Highway"
     ],
     "environments": [
       "High Pedestrian Activity"
@@ -60,9 +60,9 @@
     "standard_code": "IRC:67-2022",
     "clause": "17.8",
     "keywords": [
+      "sign",
       "hospital",
-      "faded",
-      "sign"
+      "faded"
     ],
     "road_types": [
       "All Road Types"
@@ -80,17 +80,17 @@
     "standard_code": "IRC:67-2022",
     "clause": "4.8",
     "keywords": [
-      "issue",
-      "urban",
+      "u-turn",
+      "ahead",
+      "spacing",
       "sign",
       "speed",
-      "u-turn",
-      "spacing",
-      "ahead"
+      "urban",
+      "issue"
     ],
     "road_types": [
-      "Urban Arterial",
       "Local Street",
+      "Urban Arterial",
       "Collector Road"
     ],
     "environments": [
@@ -106,15 +106,15 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.26",
     "keywords": [
-      "in",
-      "obstruction",
-      "sign",
-      "speed",
-      "visibility",
-      "placement",
-      "gap",
       "improper",
-      "median"
+      "median",
+      "sign",
+      "obstruction",
+      "speed",
+      "placement",
+      "visibility",
+      "gap",
+      "in"
     ],
     "road_types": [
       "All Road Types"
@@ -132,14 +132,14 @@
     "standard_code": "IRC:67-2022",
     "clause": "11.2",
     "keywords": [
-      "obstruction",
+      "crash",
+      "ahead",
       "prone",
       "sign",
+      "obstruction",
       "speed",
       "visibility",
-      "area",
-      "crash",
-      "ahead"
+      "area"
     ],
     "road_types": [
       "All Road Types"
@@ -158,12 +158,12 @@
     "clause": "14.6.22",
     "keywords": [
       "non-retroreflective",
-      "prohibitory",
-      "sign",
-      "speed",
       "u-turn",
       "spacing",
-      "prohibited"
+      "sign",
+      "prohibitory",
+      "prohibited",
+      "speed"
     ],
     "road_types": [
       "All Road Types"
@@ -181,17 +181,17 @@
     "standard_code": "IRC:67-2022",
     "clause": "4.8",
     "keywords": [
-      "issue",
-      "urban",
+      "u-turn",
+      "ahead",
+      "spacing",
       "sign",
       "speed",
-      "u-turn",
-      "spacing",
-      "ahead"
+      "urban",
+      "issue"
     ],
     "road_types": [
-      "Urban Arterial",
       "Local Street",
+      "Urban Arterial",
       "Collector Road"
     ],
     "environments": [
@@ -208,12 +208,12 @@
     "clause": "15.66",
     "keywords": [
       "issue",
-      "height",
-      "obstruction",
       "sign",
+      "height",
       "(left)",
-      "object",
-      "hazard"
+      "obstruction",
+      "hazard",
+      "object"
     ],
     "road_types": [
       "All Road Types"
@@ -231,12 +231,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "11.2",
     "keywords": [
-      "obstruction",
+      "bus",
       "sign",
+      "obstruction",
       "speed",
       "visibility",
-      "stop",
-      "bus"
+      "stop"
     ],
     "road_types": [
       "All Road Types"
@@ -255,10 +255,10 @@
     "clause": "16.3.6",
     "keywords": [
       "sign",
-      "truck",
+      "damaged",
       "speed",
-      "lay-by",
-      "damaged"
+      "truck",
+      "lay-by"
     ],
     "road_types": [
       "All Road Types"
@@ -276,18 +276,18 @@
     "standard_code": "IRC:67-2022",
     "clause": "17.9",
     "keywords": [
-      "sos",
       "highway",
       "sign",
-      "emergency",
-      "missing",
+      "sos",
       "facility",
-      "rural"
+      "missing",
+      "rural",
+      "emergency"
     ],
     "road_types": [
-      "Highway",
       "Expressway",
-      "Rural Road"
+      "Rural Road",
+      "Highway"
     ],
     "environments": [
       "General"
@@ -302,11 +302,11 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.57",
     "keywords": [
-      "cattle",
-      "sign",
-      "speed",
       "crossing",
-      "non-standard"
+      "sign",
+      "non-standard",
+      "speed",
+      "cattle"
     ],
     "road_types": [
       "All Road Types"
@@ -324,13 +324,13 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.8.3",
     "keywords": [
-      "prohibitory",
       "load",
       "sign",
-      "speed",
       "axle",
-      "limit",
-      "damaged"
+      "damaged",
+      "prohibitory",
+      "speed",
+      "limit"
     ],
     "road_types": [
       "All Road Types"
@@ -350,10 +350,10 @@
     "keywords": [
       "compulsory",
       "sign",
-      "placed",
       "left",
+      "turn",
       "wrongly",
-      "turn"
+      "placed"
     ],
     "road_types": [
       "All Road Types"
@@ -371,14 +371,14 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.2",
     "keywords": [
+      "ahead",
       "bridge",
       "sign",
       "speed",
-      "visibility",
-      "missing",
       "placement",
+      "visibility",
       "narrow",
-      "ahead"
+      "missing"
     ],
     "road_types": [
       "All Road Types"
@@ -397,11 +397,11 @@
     "clause": "2.3",
     "keywords": [
       "pedestrian",
-      "placed",
-      "wrongly",
       "crossing",
+      "informatory",
       "signs",
-      "informatory"
+      "wrongly",
+      "placed"
     ],
     "road_types": [
       "All Road Types"
@@ -419,12 +419,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.8.4",
     "keywords": [
-      "prohibitory",
-      "height",
       "sign",
+      "height",
+      "prohibitory",
       "speed",
-      "missing",
-      "limit"
+      "limit",
+      "missing"
     ],
     "road_types": [
       "All Road Types"
@@ -442,12 +442,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.65",
     "keywords": [
-      "faded",
-      "sign",
-      "chevron",
       "spacing",
+      "sign",
       "(normal)",
-      "single"
+      "single",
+      "chevron",
+      "faded"
     ],
     "road_types": [
       "All Road Types"
@@ -465,8 +465,8 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.4",
     "keywords": [
-      "height",
       "sign",
+      "height",
       "speed",
       "visibility",
       "missing",
@@ -488,16 +488,16 @@
     "standard_code": "IRC:35-2015",
     "clause": "2.7",
     "keywords": [
+      "message",
+      "&",
       "tram",
-      "issue",
+      "bus",
+      "marking",
+      "only",
       "visibility",
       "speed",
-      "&",
-      "marking",
       "word",
-      "message",
-      "only",
-      "bus"
+      "issue"
     ],
     "road_types": [
       "All Road Types"
@@ -515,11 +515,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "9.1.11",
     "keywords": [
+      "marking",
       "prohibitory",
-      "faded",
       "box",
-      "stop",
-      "marking"
+      "faded",
+      "stop"
     ],
     "road_types": [
       "All Road Types"
@@ -537,21 +537,21 @@
     "standard_code": "IRC:35-2015",
     "clause": "8.6",
     "keywords": [
-      "school",
-      "issue",
-      "height",
-      "visibility",
-      "direction",
       "clear",
+      "marking",
+      "height",
+      "keep",
+      "school",
+      "visibility",
       "placement",
       "information",
-      "marking",
-      "keep"
+      "issue",
+      "direction"
     ],
     "road_types": [
-      "Collector Road",
       "Urban Arterial",
-      "School Zone"
+      "School Zone",
+      "Collector Road"
     ],
     "environments": [
       "Near Schools"
@@ -566,12 +566,12 @@
     "standard_code": "IRC:35-2015",
     "clause": "2.2",
     "keywords": [
-      "reflective",
-      "straight",
-      "speed",
       "non-retro",
+      "marking",
       "arrow",
-      "marking"
+      "speed",
+      "straight",
+      "reflective"
     ],
     "road_types": [
       "All Road Types"
@@ -589,14 +589,14 @@
     "standard_code": "IRC:35-2015",
     "clause": "2.7",
     "keywords": [
-      "entry",
-      "issue",
-      "visibility",
-      "direction",
-      "speed",
-      "information",
       "marking",
-      "no"
+      "entry",
+      "visibility",
+      "speed",
+      "no",
+      "information",
+      "issue",
+      "direction"
     ],
     "road_types": [
       "All Road Types"
@@ -614,11 +614,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "11.1.2",
     "keywords": [
+      "marking",
       "block",
-      "faded",
       "speed",
       "visibility",
-      "marking",
+      "faded",
       "chequer"
     ],
     "road_types": [
@@ -638,8 +638,8 @@
     "clause": "5.3",
     "keywords": [
       "uni-directional",
-      "warning",
-      "missing"
+      "missing",
+      "warning"
     ],
     "road_types": [
       "All Road Types"
@@ -657,18 +657,18 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.2",
     "keywords": [
-      "faded",
       "pedestrian",
-      "broken",
       "crossing",
       "line",
+      "broken",
       "marking",
       "traffic",
-      "lane"
+      "lane",
+      "faded"
     ],
     "road_types": [
-      "Urban Arterial",
       "Local Street",
+      "Urban Arterial",
       "Collector Road"
     ],
     "environments": [
@@ -685,13 +685,13 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.1",
     "keywords": [
+      "center",
+      "line",
+      "continuous",
+      "marking",
       "selection",
       "colour",
-      "wrong",
-      "continuous",
-      "line",
-      "marking",
-      "center"
+      "wrong"
     ],
     "road_types": [
       "All Road Types"
@@ -710,12 +710,12 @@
     "clause": "14.2",
     "keywords": [
       "carriageway",
-      "warning",
       "within",
       "obstruction",
+      "warning",
+      "objects",
       "visibility",
-      "missing",
-      "objects"
+      "missing"
     ],
     "road_types": [
       "All Road Types"
@@ -733,11 +733,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.5 and 8.1.2",
     "keywords": [
-      "straight",
-      "speed",
-      "arrow",
+      "marking",
       "non-standard",
-      "marking"
+      "arrow",
+      "speed",
+      "straight"
     ],
     "road_types": [
       "All Road Types"
@@ -755,11 +755,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.2",
     "keywords": [
-      "missing",
       "spacing",
-      "marking",
       "line",
-      "broken"
+      "broken",
+      "marking",
+      "missing"
     ],
     "road_types": [
       "All Road Types"
@@ -777,10 +777,10 @@
     "standard_code": "IRC:35-2015",
     "clause": "5.5",
     "keywords": [
+      "warning",
       "bi-directional",
-      "spacing",
       "issue",
-      "warning"
+      "spacing"
     ],
     "road_types": [
       "All Road Types"
@@ -798,11 +798,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.7",
     "keywords": [
-      "non-standard",
+      "message",
       "marking",
+      "non-standard",
       "disabled",
-      "word",
-      "message"
+      "word"
     ],
     "road_types": [
       "All Road Types"
@@ -820,21 +820,21 @@
     "standard_code": "IRC:35-2015",
     "clause": "6.2",
     "keywords": [
-      "giveway",
-      "urban",
-      "visibility",
-      "missing",
-      "stop",
       "marking",
-      "rural"
+      "rural",
+      "visibility",
+      "urban",
+      "giveway",
+      "missing",
+      "stop"
     ],
     "road_types": [
-      "Expressway",
-      "Collector Road",
       "Local Street",
-      "Highway",
+      "Expressway",
+      "Rural Road",
       "Urban Arterial",
-      "Rural Road"
+      "Highway",
+      "Collector Road"
     ],
     "environments": [
       "Intersections"
@@ -850,17 +850,17 @@
     "clause": "7.2",
     "keywords": [
       "highway",
-      "issue",
-      "diverging",
-      "chevron",
-      "placement",
       "spacing",
-      "marking"
+      "marking",
+      "diverging",
+      "placement",
+      "chevron",
+      "issue"
     ],
     "road_types": [
-      "Highway",
       "Expressway",
-      "Rural Road"
+      "Rural Road",
+      "Highway"
     ],
     "environments": [
       "General"
@@ -875,13 +875,13 @@
     "standard_code": "IRC:35-2015",
     "clause": "7.6.3",
     "keywords": [
+      "marking",
       "warning",
       "selection",
       "colour",
+      "ladder",
       "hatching",
-      "wrong",
-      "marking",
-      "ladder"
+      "wrong"
     ],
     "road_types": [
       "All Road Types"
@@ -899,17 +899,17 @@
     "standard_code": "IRC:35-2015",
     "clause": "14.3",
     "keywords": [
-      "carriageway",
-      "height",
-      "visibility",
       "to",
-      "selection",
-      "colour",
-      "wrong",
+      "carriageway",
       "adjacent",
+      "/",
+      "height",
+      "selection",
       "objects",
+      "visibility",
       "near",
-      "/"
+      "colour",
+      "wrong"
     ],
     "road_types": [
       "All Road Types"
@@ -927,9 +927,9 @@
     "standard_code": "IRC:35-2015",
     "clause": "5.3",
     "keywords": [
+      "warning",
       "bi-directional",
-      "damaged",
-      "warning"
+      "damaged"
     ],
     "road_types": [
       "All Road Types"
@@ -947,19 +947,19 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.2",
     "keywords": [
-      "issue",
       "pedestrian",
-      "broken",
       "crossing",
-      "placement",
       "line",
+      "broken",
       "marking",
       "traffic",
-      "lane"
+      "placement",
+      "lane",
+      "issue"
     ],
     "road_types": [
-      "Urban Arterial",
       "Local Street",
+      "Urban Arterial",
       "Collector Road"
     ],
     "environments": [
@@ -976,18 +976,18 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.3",
     "keywords": [
+      "pedestrian",
       "rumble",
+      "crossing",
       "highway",
       "strip",
-      "pedestrian",
-      "speed",
-      "crossing",
-      "damaged"
+      "damaged",
+      "speed"
     ],
     "road_types": [
-      "Highway",
       "Expressway",
-      "Rural Road"
+      "Rural Road",
+      "Highway"
     ],
     "environments": [
       "High Pedestrian Activity",
@@ -1003,14 +1003,14 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.2",
     "keywords": [
-      "non-standard",
-      "damaged",
       "bump",
-      "speed"
+      "non-standard",
+      "speed",
+      "damaged"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1026,15 +1026,15 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.4",
     "keywords": [
-      "speed",
-      "missing",
-      "marking",
+      "transverse",
       "bar",
-      "transverse"
+      "marking",
+      "speed",
+      "missing"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1050,16 +1050,16 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.7",
     "keywords": [
-      "issue",
+      "transverse",
+      "bar",
+      "marking",
       "speed",
       "placement",
-      "marking",
-      "bar",
-      "transverse"
+      "issue"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1075,14 +1075,14 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.1.1",
     "keywords": [
-      "stop",
-      "non-standard",
       "hump",
-      "speed"
+      "non-standard",
+      "speed",
+      "stop"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1098,15 +1098,15 @@
     "standard_code": "IRC:SP:84-2019",
     "clause": "9.3.11 and 9.2.11",
     "keywords": [
-      "issue",
+      "hump",
       "speed",
-      "stop",
       "placement",
-      "hump"
+      "issue",
+      "stop"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1122,15 +1122,15 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.1.2",
     "keywords": [
+      "damaged",
+      "hump",
       "speed",
       "trapezoidal",
-      "stop",
-      "damaged",
-      "hump"
+      "stop"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1146,18 +1146,18 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.3",
     "keywords": [
+      "pedestrian",
       "rumble",
+      "crossing",
       "highway",
       "strip",
-      "pedestrian",
       "speed",
-      "missing",
-      "crossing"
+      "missing"
     ],
     "road_types": [
-      "Highway",
       "Expressway",
-      "Rural Road"
+      "Rural Road",
+      "Highway"
     ],
     "environments": [
       "High Pedestrian Activity",
@@ -1173,15 +1173,15 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.4",
     "keywords": [
-      "faded",
-      "speed",
-      "marking",
+      "transverse",
       "bar",
-      "transverse"
+      "marking",
+      "speed",
+      "faded"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [
@@ -1197,13 +1197,13 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.1.1",
     "keywords": [
-      "speed",
       "hump",
+      "speed",
       "missing"
     ],
     "road_types": [
-      "Residential Area",
       "Local Street",
+      "Residential Area",
       "Collector Road"
     ],
     "environments": [

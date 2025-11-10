@@ -78,7 +78,7 @@ class RoadSafetyGPT:
         print("Type 'quit' to exit\n")
         if not test_connection():
             print("\nPlease start Ollama with: ollama serve")
-            print("And make sure mistral model is pulled: ollama pull mistral")
+            print("And make sure llama3.1:8b model is pulled: ollama pull llama3.1:8b")
             return
         
         database_context = self.prepare_database_context()

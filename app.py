@@ -175,4 +175,4 @@ if __name__ == '__main__':
     else:
         print("\nError: Cannot connect to Ollama")
         print("Please start Ollama with: ollama serve")
-        print("And make sure mistral model is pulled: ollama pull mistral")
+        print("And make sure llama3.1:8b model is pulled: ollama pull llama3.1:8b")
