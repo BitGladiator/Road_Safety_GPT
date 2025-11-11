@@ -4,16 +4,16 @@
     "problem_type": "Damaged",
     "category": "Road Sign",
     "intervention_name": "STOP Sign",
-    "description": "The 'STOP' sign, used on Minor Roads intersecting Major Roads, requires vehicles to stop before entering and proceed only when safe. It is octagonal with a red background, a white border, and \"STOP\" written centrally in white. Installed on the left side of the approach, it should be placed close to the stop line, typically 1.5 m in advance, without impairing visibility of the Major Road.\nThe dimensions vary by approach speed: up to 50 km/h, 750 mm height, 25 mm border, 175 mm font; 51\u201365 km/h, 900 mm height, 30 mm border, 210 mm font; and over 65 km/h, 1200 mm height, 40 mm border, 280 mm font.",
+    "description": "The 'STOP' sign, used on Minor Roads intersecting Major Roads, requires vehicles to stop before entering and proceed only when safe. It is octagonal with a red background, a white border, and \"STOP\" written centrally in white. Installed on the left side of the approach, it should be placed close to the stop line, typically 1.5 m in advance, without impairing visibility of the Major Road.\nThe dimensions vary by approach speed: up to 50 km/h, 750 mm height, 25 mm border, 175 mm font; 51\u009665 km/h, 900 mm height, 30 mm border, 210 mm font; and over 65 km/h, 1200 mm height, 40 mm border, 280 mm font.",
     "standard_code": "IRC:67-2022",
     "clause": "14.4",
     "keywords": [
       "sign",
-      "height",
+      "stop",
       "damaged",
       "speed",
       "visibility",
-      "stop"
+      "height"
     ],
     "road_types": [
       "All Road Types"
@@ -31,20 +31,20 @@
     "standard_code": "IRC:67-2022",
     "clause": "14.10.6",
     "keywords": [
-      "pedestrian",
       "highway",
-      "minimum",
-      "sign",
-      "height",
+      "pedestrian",
       "prohibitory",
-      "speed",
-      "visibility",
+      "sign",
       "limit",
-      "issue"
+      "speed",
+      "minimum",
+      "visibility",
+      "issue",
+      "height"
     ],
     "road_types": [
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Highway"
     ],
     "environments": [
@@ -60,8 +60,8 @@
     "standard_code": "IRC:67-2022",
     "clause": "17.8",
     "keywords": [
-      "sign",
       "hospital",
+      "sign",
       "faded"
     ],
     "road_types": [
@@ -80,18 +80,18 @@
     "standard_code": "IRC:67-2022",
     "clause": "4.8",
     "keywords": [
-      "u-turn",
       "ahead",
-      "spacing",
-      "sign",
-      "speed",
       "urban",
+      "u-turn",
+      "sign",
+      "spacing",
+      "speed",
       "issue"
     ],
     "road_types": [
-      "Local Street",
       "Urban Arterial",
-      "Collector Road"
+      "Collector Road",
+      "Local Street"
     ],
     "environments": [
       "General"
@@ -106,15 +106,15 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.26",
     "keywords": [
-      "improper",
+      "in",
+      "obstruction",
+      "placement",
       "median",
       "sign",
-      "obstruction",
+      "improper",
       "speed",
-      "placement",
       "visibility",
-      "gap",
-      "in"
+      "gap"
     ],
     "road_types": [
       "All Road Types"
@@ -134,12 +134,12 @@
     "keywords": [
       "crash",
       "ahead",
-      "prone",
-      "sign",
+      "area",
       "obstruction",
+      "sign",
+      "prone",
       "speed",
-      "visibility",
-      "area"
+      "visibility"
     ],
     "road_types": [
       "All Road Types"
@@ -153,17 +153,17 @@
     "problem_type": "Non-Retroreflective",
     "category": "Road Sign",
     "intervention_name": "U-Turn Prohibited Sign",
-    "description": "The 'U-Turn Prohibited' sign indicates areas where vehicles are not allowed to reverse their direction of travel. It should be placed at the start and at intervals along road sections where this restriction is enforced by the controlling authority. The maximum spacing between two successive signs should not exceed 120 meters on each side of the road. The sign is circular with a red border, a red oblique bar, a white background, and a black symbol. The sign is circular with a red border, a red oblique bar, a white background, and a black symbol. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border and oblique bar, 75 mm font; or 600 mm diameter, 50 mm border and bar, 100 mm font), 66\u201380 km/h (750 mm diameter, 60 mm border and oblique bar, 125 mm font), 81\u2013100 km/h (900 mm diameter, 75 mm border and oblique bar, 150 mm font), 101\u2013120 km/h (1200 mm diameter, 100 mm border and oblique bar, 225 mm font), and 121\u2013150 km/h (1500 mm diameter, 125 mm border and oblique bar, 250 mm font).\nThe retro-reflective sheeting used shall cover the entire surface, be weather-resistant, colorfast, and free from defects, with a minimum coefficient of retro-reflection in accordance with ASTM D 4956 standards. The sign shall be replaced either at the end of the warranty period of the retro-reflective sheeting or if its reflectivity falls below 80 percent of the initial reflectivity (as per clauses 6.7 & 13.3).\n*Prohibitory Signs in conjunction with traffic signal",
+    "description": "The 'U-Turn Prohibited' sign indicates areas where vehicles are not allowed to reverse their direction of travel. It should be placed at the start and at intervals along road sections where this restriction is enforced by the controlling authority. The maximum spacing between two successive signs should not exceed 120 meters on each side of the road. The sign is circular with a red border, a red oblique bar, a white background, and a black symbol. The sign is circular with a red border, a red oblique bar, a white background, and a black symbol. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border and oblique bar, 75 mm font; or 600 mm diameter, 50 mm border and bar, 100 mm font), 66\u009680 km/h (750 mm diameter, 60 mm border and oblique bar, 125 mm font), 81\u0096100 km/h (900 mm diameter, 75 mm border and oblique bar, 150 mm font), 101\u0096120 km/h (1200 mm diameter, 100 mm border and oblique bar, 225 mm font), and 121\u0096150 km/h (1500 mm diameter, 125 mm border and oblique bar, 250 mm font).\nThe retro-reflective sheeting used shall cover the entire surface, be weather-resistant, colorfast, and free from defects, with a minimum coefficient of retro-reflection in accordance with ASTM D 4956 standards. The sign shall be replaced either at the end of the warranty period of the retro-reflective sheeting or if its reflectivity falls below 80 percent of the initial reflectivity (as per clauses 6.7 & 13.3).\n*Prohibitory Signs in conjunction with traffic signal",
     "standard_code": "IRC:67-2022",
     "clause": "14.6.22",
     "keywords": [
-      "non-retroreflective",
-      "u-turn",
-      "spacing",
-      "sign",
-      "prohibitory",
       "prohibited",
-      "speed"
+      "u-turn",
+      "prohibitory",
+      "sign",
+      "spacing",
+      "speed",
+      "non-retroreflective"
     ],
     "road_types": [
       "All Road Types"
@@ -181,18 +181,18 @@
     "standard_code": "IRC:67-2022",
     "clause": "4.8",
     "keywords": [
-      "u-turn",
       "ahead",
-      "spacing",
-      "sign",
-      "speed",
       "urban",
+      "u-turn",
+      "sign",
+      "spacing",
+      "speed",
       "issue"
     ],
     "road_types": [
-      "Local Street",
       "Urban Arterial",
-      "Collector Road"
+      "Collector Road",
+      "Local Street"
     ],
     "environments": [
       "General"
@@ -207,13 +207,13 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.66",
     "keywords": [
-      "issue",
-      "sign",
-      "height",
-      "(left)",
-      "obstruction",
       "hazard",
-      "object"
+      "obstruction",
+      "object",
+      "sign",
+      "(left)",
+      "issue",
+      "height"
     ],
     "road_types": [
       "All Road Types"
@@ -231,12 +231,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "11.2",
     "keywords": [
-      "bus",
-      "sign",
       "obstruction",
+      "sign",
+      "stop",
       "speed",
       "visibility",
-      "stop"
+      "bus"
     ],
     "road_types": [
       "All Road Types"
@@ -254,11 +254,11 @@
     "standard_code": "IRC:67-2022",
     "clause": "16.3.6",
     "keywords": [
-      "sign",
-      "damaged",
-      "speed",
       "truck",
-      "lay-by"
+      "sign",
+      "lay-by",
+      "damaged",
+      "speed"
     ],
     "road_types": [
       "All Road Types"
@@ -277,16 +277,16 @@
     "clause": "17.9",
     "keywords": [
       "highway",
-      "sign",
-      "sos",
-      "facility",
-      "missing",
       "rural",
-      "emergency"
+      "missing",
+      "facility",
+      "sign",
+      "emergency",
+      "sos"
     ],
     "road_types": [
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Highway"
     ],
     "environments": [
@@ -302,11 +302,11 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.57",
     "keywords": [
-      "crossing",
-      "sign",
+      "cattle",
       "non-standard",
-      "speed",
-      "cattle"
+      "sign",
+      "crossing",
+      "speed"
     ],
     "road_types": [
       "All Road Types"
@@ -320,17 +320,17 @@
     "problem_type": "Damaged",
     "category": "Road Sign",
     "intervention_name": "Axle Load Limit Sign",
-    "description": "Axle Load Limit Sign shall be erected where entry is prohibited for vehicles whose axle load exceeds a particular limit. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border, 75 mm font; or 600 mm diameter, 50 mm border, 100 mm font), 66\u201380 km/h (750 mm diameter, 60 mm border, 125 mm font), 81\u2013100 km/h (900 mm diameter, 75 mm border, 150 mm font), 101\u2013120 km/h (1200 mm diameter, 100 mm border, 225 mm font), and 121\u2013150 km/h (1500 mm diameter, 125 mm border, 250 mm font).\n*Prohibitory Signs in conjunction with traffic signal",
+    "description": "Axle Load Limit Sign shall be erected where entry is prohibited for vehicles whose axle load exceeds a particular limit. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border, 75 mm font; or 600 mm diameter, 50 mm border, 100 mm font), 66\u009680 km/h (750 mm diameter, 60 mm border, 125 mm font), 81\u0096100 km/h (900 mm diameter, 75 mm border, 150 mm font), 101\u0096120 km/h (1200 mm diameter, 100 mm border, 225 mm font), and 121\u0096150 km/h (1500 mm diameter, 125 mm border, 250 mm font).\n*Prohibitory Signs in conjunction with traffic signal",
     "standard_code": "IRC:67-2022",
     "clause": "14.8.3",
     "keywords": [
-      "load",
-      "sign",
-      "axle",
-      "damaged",
       "prohibitory",
+      "axle",
+      "sign",
+      "limit",
+      "damaged",
       "speed",
-      "limit"
+      "load"
     ],
     "road_types": [
       "All Road Types"
@@ -348,12 +348,12 @@
     "standard_code": "IRC:67-2022",
     "clause": "2.3",
     "keywords": [
-      "compulsory",
-      "sign",
       "left",
-      "turn",
+      "sign",
       "wrongly",
-      "placed"
+      "placed",
+      "compulsory",
+      "turn"
     ],
     "road_types": [
       "All Road Types"
@@ -372,13 +372,13 @@
     "clause": "15.2",
     "keywords": [
       "ahead",
-      "bridge",
-      "sign",
-      "speed",
-      "placement",
-      "visibility",
+      "missing",
       "narrow",
-      "missing"
+      "placement",
+      "sign",
+      "bridge",
+      "speed",
+      "visibility"
     ],
     "road_types": [
       "All Road Types"
@@ -396,12 +396,13 @@
     "standard_code": "IRC:67-2022",
     "clause": "2.3",
     "keywords": [
-      "pedestrian",
-      "crossing",
-      "informatory",
       "signs",
+      "pedestrian",
+      "sign",
       "wrongly",
-      "placed"
+      "crossing",
+      "placed",
+      "informatory"
     ],
     "road_types": [
       "All Road Types"
@@ -415,16 +416,16 @@
     "problem_type": "Missing",
     "category": "Road Sign",
     "intervention_name": "Height Limit Sign",
-    "description": "Height Limit Sign shall be erected in advance of an overhead structure where entry is prohibited for vehicles whose height exceeds a certain limit. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border, 75 mm font; or 600 mm diameter, 50 mm border and bar, 100 mm font), 66\u201380 km/h (750 mm diameter, 60 mm border, 125 mm font), 81\u2013100 km/h (900 mm diameter, 75 mm border, 150 mm font), 101\u2013120 km/h (1200 mm diameter, 100 mm border, 225 mm font), and 121\u2013150 km/h (1500 mm diameter, 125 mm border, 250 mm font).\n*Prohibitory Signs in conjunction with traffic signal",
+    "description": "Height Limit Sign shall be erected in advance of an overhead structure where entry is prohibited for vehicles whose height exceeds a certain limit. Its size depends on design speed: Up to 65 km/h (300 mm* diameter, 35 mm border, 75 mm font; or 600 mm diameter, 50 mm border and bar, 100 mm font), 66\u009680 km/h (750 mm diameter, 60 mm border, 125 mm font), 81\u0096100 km/h (900 mm diameter, 75 mm border, 150 mm font), 101\u0096120 km/h (1200 mm diameter, 100 mm border, 225 mm font), and 121\u0096150 km/h (1500 mm diameter, 125 mm border, 250 mm font).\n*Prohibitory Signs in conjunction with traffic signal",
     "standard_code": "IRC:67-2022",
     "clause": "14.8.4",
     "keywords": [
-      "sign",
-      "height",
+      "missing",
       "prohibitory",
-      "speed",
+      "sign",
       "limit",
-      "missing"
+      "speed",
+      "height"
     ],
     "road_types": [
       "All Road Types"
@@ -442,12 +443,14 @@
     "standard_code": "IRC:67-2022",
     "clause": "15.65",
     "keywords": [
-      "spacing",
-      "sign",
       "(normal)",
-      "single",
+      "curve",
+      "faded",
+      "sign",
+      "spacing",
+      "curved",
       "chevron",
-      "faded"
+      "single"
     ],
     "road_types": [
       "All Road Types"
@@ -461,16 +464,16 @@
     "problem_type": "Missing",
     "category": "Road Sign",
     "intervention_name": "STOP Sign",
-    "description": "The 'STOP' sign, used on Minor Roads intersecting Major Roads, requires vehicles to stop before entering and proceed only when safe. It is octagonal with a red background, a white border, and \"STOP\" written centrally in white. Installed on the left side of the approach, it should be placed close to the stop line, typically 1.5 m in advance, without impairing visibility of the Major Road.\nThe dimensions vary by approach speed: up to 50 km/h, 750 mm height, 25 mm border, 175 mm font; 51\u201365 km/h, 900 mm height, 30 mm border, 210 mm font; and over 65 km/h, 1200 mm height, 40 mm border, 280 mm font.",
+    "description": "The 'STOP' sign, used on Minor Roads intersecting Major Roads, requires vehicles to stop before entering and proceed only when safe. It is octagonal with a red background, a white border, and \"STOP\" written centrally in white. Installed on the left side of the approach, it should be placed close to the stop line, typically 1.5 m in advance, without impairing visibility of the Major Road.\nThe dimensions vary by approach speed: up to 50 km/h, 750 mm height, 25 mm border, 175 mm font; 51\u009665 km/h, 900 mm height, 30 mm border, 210 mm font; and over 65 km/h, 1200 mm height, 40 mm border, 280 mm font.",
     "standard_code": "IRC:67-2022",
     "clause": "14.4",
     "keywords": [
+      "missing",
       "sign",
-      "height",
+      "stop",
       "speed",
       "visibility",
-      "missing",
-      "stop"
+      "height"
     ],
     "road_types": [
       "All Road Types"
@@ -484,20 +487,21 @@
     "problem_type": "Visibility Issue",
     "category": "Road Marking",
     "intervention_name": "Word Message TRAM & BUS ONLY Marking",
-    "description": "Road markings must be clearly visible day and night, providing essential guidance, especially on unlit roads. Drivers shall detect markings at least two seconds ahead and that minimum preview distance with respect to speed is as follows: For <30 km/h: 17 m; 30\u201340 km/h: 22 m; 40\u201350 km/h: 28 m; 50\u201365 km/h: 36 m; 65\u201370 km/h: 39 m; 70\u201380 km/h: 44 m; 80\u201390 km/h: 50 m; 90\u2013100 km/h: 56 m; 100\u2013110 km/h: 61 m; 110\u2013120 km/h: 67 m. Visibility improves with wider lines, higher mark-to-gap ratios, and increased retro-reflectivity. These factors help drivers detect the markings according to design speed of roadway.",
+    "description": "Road markings must be clearly visible day and night, providing essential guidance, especially on unlit roads. Drivers shall detect markings at least two seconds ahead and that minimum preview distance with respect to speed is as follows: For <30 km/h: 17 m; 30\u009640 km/h: 22 m; 40\u009650 km/h: 28 m; 50\u009665 km/h: 36 m; 65\u009670 km/h: 39 m; 70\u009680 km/h: 44 m; 80\u009690 km/h: 50 m; 90\u0096100 km/h: 56 m; 100\u0096110 km/h: 61 m; 110\u0096120 km/h: 67 m. Visibility improves with wider lines, higher mark-to-gap ratios, and increased retro-reflectivity. These factors help drivers detect the markings according to design speed of roadway.",
     "standard_code": "IRC:35-2015",
     "clause": "2.7",
     "keywords": [
-      "message",
-      "&",
       "tram",
-      "bus",
-      "marking",
-      "only",
-      "visibility",
-      "speed",
       "word",
-      "issue"
+      "message",
+      "sign",
+      "marking",
+      "visibility",
+      "only",
+      "bus",
+      "speed",
+      "issue",
+      "&"
     ],
     "road_types": [
       "All Road Types"
@@ -515,11 +519,12 @@
     "standard_code": "IRC:35-2015",
     "clause": "9.1.11",
     "keywords": [
-      "marking",
-      "prohibitory",
-      "box",
       "faded",
-      "stop"
+      "box",
+      "prohibitory",
+      "sign",
+      "stop",
+      "marking"
     ],
     "road_types": [
       "All Road Types"
@@ -537,21 +542,21 @@
     "standard_code": "IRC:35-2015",
     "clause": "8.6",
     "keywords": [
-      "clear",
-      "marking",
-      "height",
-      "keep",
-      "school",
-      "visibility",
       "placement",
+      "marking",
       "information",
+      "visibility",
+      "direction",
+      "school",
+      "keep",
+      "height",
       "issue",
-      "direction"
+      "clear"
     ],
     "road_types": [
       "Urban Arterial",
-      "School Zone",
-      "Collector Road"
+      "Collector Road",
+      "School Zone"
     ],
     "environments": [
       "Near Schools"
@@ -567,11 +572,11 @@
     "clause": "2.2",
     "keywords": [
       "non-retro",
-      "marking",
-      "arrow",
-      "speed",
       "straight",
-      "reflective"
+      "marking",
+      "speed",
+      "reflective",
+      "arrow"
     ],
     "road_types": [
       "All Road Types"
@@ -585,18 +590,19 @@
     "problem_type": "Visibility Issue",
     "category": "Road Marking",
     "intervention_name": "Direction Information NO ENTRY Marking",
-    "description": "Road markings must be clearly visible day and night, providing essential guidance, especially on unlit roads. Drivers shall detect markings at least two seconds ahead and that minimum preview distance with respect to speed is as follows: For <30 km/h: 17 m; 30\u201340 km/h: 22 m; 40\u201350 km/h: 28 m; 50\u201365 km/h: 36 m; 65\u201370 km/h: 39 m; 70\u201380 km/h: 44 m; 80\u201390 km/h: 50 m; 90\u2013100 km/h: 56 m; 100\u2013110 km/h: 61 m; 110\u2013120 km/h: 67 m. Visibility improves with wider lines, higher mark-to-gap ratios, and increased retro-reflectivity. These factors help drivers detect the markings according to design speed of roadway.",
+    "description": "Road markings must be clearly visible day and night, providing essential guidance, especially on unlit roads. Drivers shall detect markings at least two seconds ahead and that minimum preview distance with respect to speed is as follows: For <30 km/h: 17 m; 30\u009640 km/h: 22 m; 40\u009650 km/h: 28 m; 50\u009665 km/h: 36 m; 65\u009670 km/h: 39 m; 70\u009680 km/h: 44 m; 80\u009690 km/h: 50 m; 90\u0096100 km/h: 56 m; 100\u0096110 km/h: 61 m; 110\u0096120 km/h: 67 m. Visibility improves with wider lines, higher mark-to-gap ratios, and increased retro-reflectivity. These factors help drivers detect the markings according to design speed of roadway.",
     "standard_code": "IRC:35-2015",
     "clause": "2.7",
     "keywords": [
+      "no",
+      "sign",
       "marking",
-      "entry",
+      "information",
       "visibility",
       "speed",
-      "no",
-      "information",
+      "direction",
       "issue",
-      "direction"
+      "entry"
     ],
     "road_types": [
       "All Road Types"
@@ -614,11 +620,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "11.1.2",
     "keywords": [
-      "marking",
+      "faded",
       "block",
+      "marking",
       "speed",
       "visibility",
-      "faded",
       "chequer"
     ],
     "road_types": [
@@ -637,9 +643,10 @@
     "standard_code": "IRC:35-2015",
     "clause": "5.3",
     "keywords": [
-      "uni-directional",
+      "marking",
+      "warning",
       "missing",
-      "warning"
+      "uni-directional"
     ],
     "road_types": [
       "All Road Types"
@@ -657,19 +664,19 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.2",
     "keywords": [
+      "faded",
       "pedestrian",
-      "crossing",
-      "line",
+      "lane",
       "broken",
       "marking",
+      "crossing",
       "traffic",
-      "lane",
-      "faded"
+      "line"
     ],
     "road_types": [
-      "Local Street",
       "Urban Arterial",
-      "Collector Road"
+      "Collector Road",
+      "Local Street"
     ],
     "environments": [
       "High Pedestrian Activity",
@@ -685,13 +692,13 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.1",
     "keywords": [
-      "center",
-      "line",
       "continuous",
-      "marking",
       "selection",
+      "marking",
+      "wrong",
+      "center",
       "colour",
-      "wrong"
+      "line"
     ],
     "road_types": [
       "All Road Types"
@@ -705,17 +712,18 @@
     "problem_type": "Missing",
     "category": "Road Marking",
     "intervention_name": "Objects within Carriageway",
-    "description": "Obstructions within the carriageway (e.g., underpass piers, abutments) must have at least six alternate black and yellow stripes sloping 45 degrees towards traffic, each not less than 300 mm wide. The diagonal stripes shall be uniform with black and yellow stripes at an angle of 45 degrees towards traffic. If marking directly on the object is not feasible, an independent surface may be used in front of it. The total marking width must match the obstruction\u2019s width, including the paved shoulder, and be at least 450 mm. Warning lines on the pavement should be placed before the obstruction, followed by diagonal markings. Kerbs of raised channelizing islands, central islands and medians must have 500 mm wide black and white vertical stripes for visibility.",
+    "description": "Obstructions within the carriageway (e.g., underpass piers, abutments) must have at least six alternate black and yellow stripes sloping 45 degrees towards traffic, each not less than 300 mm wide. The diagonal stripes shall be uniform with black and yellow stripes at an angle of 45 degrees towards traffic. If marking directly on the object is not feasible, an independent surface may be used in front of it. The total marking width must match the obstruction\u0092s width, including the paved shoulder, and be at least 450 mm. Warning lines on the pavement should be placed before the obstruction, followed by diagonal markings. Kerbs of raised channelizing islands, central islands and medians must have 500 mm wide black and white vertical stripes for visibility.",
     "standard_code": "IRC:35-2015",
     "clause": "14.2",
     "keywords": [
       "carriageway",
-      "within",
-      "obstruction",
-      "warning",
+      "missing",
       "objects",
-      "visibility",
-      "missing"
+      "obstruction",
+      "within",
+      "marking",
+      "warning",
+      "visibility"
     ],
     "road_types": [
       "All Road Types"
@@ -733,11 +741,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.5 and 8.1.2",
     "keywords": [
-      "marking",
+      "straight",
       "non-standard",
-      "arrow",
+      "marking",
       "speed",
-      "straight"
+      "arrow"
     ],
     "road_types": [
       "All Road Types"
@@ -755,11 +763,12 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.2",
     "keywords": [
-      "spacing",
-      "line",
+      "missing",
+      "sign",
       "broken",
+      "spacing",
       "marking",
-      "missing"
+      "line"
     ],
     "road_types": [
       "All Road Types"
@@ -777,10 +786,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "5.5",
     "keywords": [
+      "spacing",
+      "marking",
       "warning",
       "bi-directional",
-      "issue",
-      "spacing"
+      "issue"
     ],
     "road_types": [
       "All Road Types"
@@ -798,11 +808,11 @@
     "standard_code": "IRC:35-2015",
     "clause": "3.7",
     "keywords": [
+      "word",
       "message",
-      "marking",
       "non-standard",
-      "disabled",
-      "word"
+      "marking",
+      "disabled"
     ],
     "road_types": [
       "All Road Types"
@@ -816,25 +826,26 @@
     "problem_type": "Missing",
     "category": "Road Marking",
     "intervention_name": "Giveway Marking",
-    "description": "Consists of two broken lines (600 mm segments, 300 mm gaps), each 200 mm wide, spaced 300 mm apart. Used at intersections without stop signs, signals, or police control.\nGive Way Lines must be supplemented by a hollow triangular approach marking and a roadside sign, placed 2.5\u201312 m from the transverse marking.\nOn two-way minor roads, the marking extends to the centerline, with a broken line for the remaining width. If needed, a continuous line can emphasize the major road\u2019s kerb line.\nOn major roads with paved shoulders, markings align with the shoulder edge for continuity.\nRoundabouts require Give Way markings and signs at entry points.\nUse Stop Marking and Stop Sign on minor roads at its intersecting point with a major road with restricted visibility, poor alignment, or high crash rates. If visibility is obstructed due to geometry, climate, or traffic, install a Stop Marking and Stop Sign. If visibility is clear in both directions, use a Give Way Marking and Give Way Sign on the minor road. On inter-urban and rural roads, Stop Markings and Stop Signs are preferred as they are more familiar to road users than Give Way Signs and Markings (as per clause 6.3).",
+    "description": "Consists of two broken lines (600 mm segments, 300 mm gaps), each 200 mm wide, spaced 300 mm apart. Used at intersections without stop signs, signals, or police control.\nGive Way Lines must be supplemented by a hollow triangular approach marking and a roadside sign, placed 2.5\u009612 m from the transverse marking.\nOn two-way minor roads, the marking extends to the centerline, with a broken line for the remaining width. If needed, a continuous line can emphasize the major road\u0092s kerb line.\nOn major roads with paved shoulders, markings align with the shoulder edge for continuity.\nRoundabouts require Give Way markings and signs at entry points.\nUse Stop Marking and Stop Sign on minor roads at its intersecting point with a major road with restricted visibility, poor alignment, or high crash rates. If visibility is obstructed due to geometry, climate, or traffic, install a Stop Marking and Stop Sign. If visibility is clear in both directions, use a Give Way Marking and Give Way Sign on the minor road. On inter-urban and rural roads, Stop Markings and Stop Signs are preferred as they are more familiar to road users than Give Way Signs and Markings (as per clause 6.3).",
     "standard_code": "IRC:35-2015",
     "clause": "6.2",
     "keywords": [
-      "marking",
       "rural",
-      "visibility",
-      "urban",
-      "giveway",
       "missing",
-      "stop"
+      "urban",
+      "sign",
+      "stop",
+      "marking",
+      "visibility",
+      "giveway"
     ],
     "road_types": [
-      "Local Street",
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Urban Arterial",
-      "Highway",
-      "Collector Road"
+      "Collector Road",
+      "Local Street",
+      "Highway"
     ],
     "environments": [
       "Intersections"
@@ -850,16 +861,16 @@
     "clause": "7.2",
     "keywords": [
       "highway",
+      "placement",
       "spacing",
       "marking",
-      "diverging",
-      "placement",
       "chevron",
-      "issue"
+      "issue",
+      "diverging"
     ],
     "road_types": [
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Highway"
     ],
     "environments": [
@@ -875,13 +886,13 @@
     "standard_code": "IRC:35-2015",
     "clause": "7.6.3",
     "keywords": [
-      "marking",
-      "warning",
-      "selection",
-      "colour",
       "ladder",
-      "hatching",
-      "wrong"
+      "selection",
+      "marking",
+      "wrong",
+      "warning",
+      "colour",
+      "hatching"
     ],
     "road_types": [
       "All Road Types"
@@ -899,17 +910,17 @@
     "standard_code": "IRC:35-2015",
     "clause": "14.3",
     "keywords": [
-      "to",
       "carriageway",
       "adjacent",
-      "/",
-      "height",
-      "selection",
       "objects",
-      "visibility",
+      "selection",
+      "/",
       "near",
+      "wrong",
+      "to",
+      "visibility",
       "colour",
-      "wrong"
+      "height"
     ],
     "road_types": [
       "All Road Types"
@@ -928,8 +939,9 @@
     "clause": "5.3",
     "keywords": [
       "warning",
+      "damaged",
       "bi-directional",
-      "damaged"
+      "marking"
     ],
     "road_types": [
       "All Road Types"
@@ -947,20 +959,20 @@
     "standard_code": "IRC:35-2015",
     "clause": "4.2",
     "keywords": [
+      "placement",
       "pedestrian",
-      "crossing",
-      "line",
+      "lane",
       "broken",
       "marking",
+      "crossing",
       "traffic",
-      "placement",
-      "lane",
+      "line",
       "issue"
     ],
     "road_types": [
-      "Local Street",
       "Urban Arterial",
-      "Collector Road"
+      "Collector Road",
+      "Local Street"
     ],
     "environments": [
       "High Pedestrian Activity",
@@ -976,17 +988,17 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.3",
     "keywords": [
-      "pedestrian",
-      "rumble",
-      "crossing",
       "highway",
-      "strip",
+      "pedestrian",
+      "crossing",
       "damaged",
-      "speed"
+      "speed",
+      "rumble",
+      "strip"
     ],
     "road_types": [
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Highway"
     ],
     "environments": [
@@ -1003,15 +1015,15 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.2",
     "keywords": [
-      "bump",
-      "non-standard",
       "speed",
+      "non-standard",
+      "bump",
       "damaged"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1027,15 +1039,15 @@
     "clause": "2.3.3.4",
     "keywords": [
       "transverse",
-      "bar",
+      "missing",
       "marking",
       "speed",
-      "missing"
+      "bar"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1051,16 +1063,16 @@
     "clause": "3.7",
     "keywords": [
       "transverse",
-      "bar",
+      "placement",
       "marking",
       "speed",
-      "placement",
-      "issue"
+      "issue",
+      "bar"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1075,15 +1087,16 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.1.1",
     "keywords": [
-      "hump",
       "non-standard",
-      "speed",
-      "stop"
+      "sign",
+      "stop",
+      "hump",
+      "speed"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1098,16 +1111,17 @@
     "standard_code": "IRC:SP:84-2019",
     "clause": "9.3.11 and 9.2.11",
     "keywords": [
-      "hump",
-      "speed",
       "placement",
-      "issue",
-      "stop"
+      "sign",
+      "hump",
+      "stop",
+      "speed",
+      "issue"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1122,16 +1136,17 @@
     "standard_code": "IRC:99-2018",
     "clause": "3.1.1.2",
     "keywords": [
-      "damaged",
+      "sign",
+      "stop",
       "hump",
-      "speed",
       "trapezoidal",
-      "stop"
+      "damaged",
+      "speed"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1146,17 +1161,17 @@
     "standard_code": "IRC:99-2018",
     "clause": "2.3.3.3",
     "keywords": [
-      "pedestrian",
-      "rumble",
-      "crossing",
       "highway",
-      "strip",
+      "missing",
+      "pedestrian",
+      "crossing",
       "speed",
-      "missing"
+      "rumble",
+      "strip"
     ],
     "road_types": [
-      "Expressway",
       "Rural Road",
+      "Expressway",
       "Highway"
     ],
     "environments": [
@@ -1174,15 +1189,15 @@
     "clause": "2.3.3.4",
     "keywords": [
       "transverse",
-      "bar",
+      "faded",
       "marking",
       "speed",
-      "faded"
+      "bar"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
@@ -1199,12 +1214,13 @@
     "keywords": [
       "hump",
       "speed",
+      "sign",
       "missing"
     ],
     "road_types": [
+      "Collector Road",
       "Local Street",
-      "Residential Area",
-      "Collector Road"
+      "Residential Area"
     ],
     "environments": [
       "General"
