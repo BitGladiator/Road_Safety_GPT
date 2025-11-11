@@ -5,9 +5,9 @@ import sys
 from datetime import datetime
 import secrets
 
+# Get the current directory where app.py is located (root directory)
 current_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(current_dir)
-sys.path.append(parent_dir)
+sys.path.append(current_dir)
 
 from scripts.ollama_client import OllamaClient, test_connection
 
@@ -23,44 +23,51 @@ class RoadSafetyGPT:
     def load_database(self):
         """Load the processed interventions database"""
         try:
-            db_path = os.path.join(parent_dir, 'data', 'processed_database.json')
+            # Since app.py is in root, data folder is directly accessible
+            db_path = os.path.join(current_dir, 'data', 'processed_database.json')
+            print(f"Looking for database at: {db_path}")
+            print(f"File exists: {os.path.exists(db_path)}")
+            
             with open(db_path, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except FileNotFoundError:
             print("Error: Processed database not found.")
+            print(f"Expected at: {db_path}")
+            print("Please check if the file exists at this location.")
             return []
     
     def load_system_prompt(self):
         """Load the system prompt"""
         try:
-            prompt_path = os.path.join(parent_dir, 'prompts', 'system_prompt.txt')
+            # Since app.py is in root, prompts folder is directly accessible
+            prompt_path = os.path.join(current_dir, 'prompts', 'system_prompt.txt')
+            print(f"Looking for system prompt at: {prompt_path}")
+            
             with open(prompt_path, 'r', encoding='utf-8') as f:
                 return f.read()
         except FileNotFoundError:
+            print("Warning: System prompt not found, using default")
             return "You are a Road Safety Expert AI assistant."
     
     def prepare_database_context(self, user_query=""):
         """Prepare focused database context for the AI"""
-        # Get relevant interventions based on query
         keyword_matches = self.search_interventions(user_query)
         relevant_interventions = keyword_matches[:5] if keyword_matches else self.database[:8]
         
         context = "RELEVANT ROAD SAFETY INTERVENTIONS:\n\n"
         
         for intervention in relevant_interventions:
-            context += f"🔹 {intervention['intervention_name']}\n"
+            context += f"{intervention['intervention_name']}\n"
             context += f"   Problem Type: {intervention['problem_type']}\n"
             context += f"   Category: {intervention['category']}\n"
             context += f"   Standard: {intervention['standard_code']} Clause {intervention['clause']}\n"
-            
-            # Include full description for better context
             context += f"   Description: {intervention['description']}\n"
             context += "─" * 50 + "\n"
         
         return context
     
     def search_interventions(self, user_query):
-        """Improved keyword-based search - FIXED INDENTATION"""
+        """Improved keyword-based search"""
         query_lower = user_query.lower()
         matches = []
         
@@ -97,12 +104,11 @@ class RoadSafetyGPT:
             if score > 0:
                 matches.append((score, intervention))
         
-        # FIXED: This was inside the loop!
         matches.sort(key=lambda x: x[0], reverse=True)
         return [match[1] for match in matches]
     
     def get_response(self, user_query):
-        """Get AI response for user query - FIXED LOGIC"""
+        """Get AI response for user query"""
         keyword_matches = self.search_interventions(user_query)
         focused_context = self.prepare_database_context(user_query)
         response = self.client.query_road_safety(
@@ -184,6 +190,7 @@ def status():
         'database_loaded': len(road_safety_gpt.database) > 0,
         'intervention_count': len(road_safety_gpt.database)
     })
+
 @app.route('/api/debug', methods=['POST'])
 def debug_query():
     """Debug endpoint to see what the AI receives"""
@@ -204,6 +211,8 @@ if __name__ == '__main__':
     print("=" * 60)
     print("🚦 ROAD SAFETY INTERVENTION GPT - Web Interface")
     print("=" * 60)
+    print(f"Current directory: {current_dir}")
+    print(f"Database path: {os.path.join(current_dir, 'data', 'processed_database.json')}")
     print(f"Loaded {len(road_safety_gpt.database)} interventions from database")
     
     if test_connection():
