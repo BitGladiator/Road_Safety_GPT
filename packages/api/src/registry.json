@@ -1,0 +1,22 @@
+{
+  "LogisticsCo": [
+    {
+      "id": "support-tickets",
+      "name": "Support Tickets",
+      "icon": "ticket",
+      "url": "http://localhost:3002/remoteEntry.js",
+      "scope": "supportTicketsApp",
+      "module": "./App"
+    }
+  ],
+  "RetailGmbH": [
+    {
+      "id": "support-tickets",
+      "name": "Support Tickets",
+      "icon": "ticket",
+      "url": "http://localhost:3002/remoteEntry.js",
+      "scope": "supportTicketsApp",
+      "module": "./App"
+    }
+  ]
+}
