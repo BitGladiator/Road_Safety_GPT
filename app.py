@@ -5,7 +5,6 @@ import sys
 from datetime import datetime
 import secrets
 
-# Get the current directory where app.py is located (root directory)
 current_dir = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(current_dir)
 
@@ -23,7 +22,6 @@ class RoadSafetyGPT:
     def load_database(self):
         """Load the processed interventions database"""
         try:
-            # Since app.py is in root, data folder is directly accessible
             db_path = os.path.join(current_dir, 'data', 'processed_database.json')
             print(f"Looking for database at: {db_path}")
             print(f"File exists: {os.path.exists(db_path)}")
@@ -39,7 +37,6 @@ class RoadSafetyGPT:
     def load_system_prompt(self):
         """Load the system prompt"""
         try:
-            # Since app.py is in root, prompts folder is directly accessible
             prompt_path = os.path.join(current_dir, 'prompts', 'system_prompt.txt')
             print(f"Looking for system prompt at: {prompt_path}")
             
@@ -74,29 +71,22 @@ class RoadSafetyGPT:
         for intervention in self.database:
             score = 0
             
-            # Exact problem type match (highest priority)
             if intervention['problem_type'].lower() in query_lower:
                 score += 10
             
-            # Intervention name match
             if intervention['intervention_name'].lower() in query_lower:
                 score += 8
             
-            # Category match
             if intervention['category'].lower() in query_lower:
                 score += 5
             
-            # Keyword matches
             for keyword in intervention['keywords']:
                 if keyword.lower() in query_lower:
                     score += 2
             
-            # Road type match
             for road_type in intervention['road_types']:
                 if road_type.lower() in query_lower:
                     score += 3
-            
-            # Environment match
             for env in intervention['environments']:
                 if env.lower() in query_lower:
                     score += 3

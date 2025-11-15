@@ -20,8 +20,6 @@ def find_csv_file():
         'raw_database/GPT_Input_DB(Sheet1).csv',
         'GPT_Input_DB(Sheet1).csv', 
     ]
-    
-    # Also search for any CSV files
     csv_search_locations = [
         os.path.join(project_root, 'data/raw_database/*.csv'),
         os.path.join(project_root, 'raw_database/*.csv'),
@@ -102,16 +100,10 @@ def process_database():
 def extract_keywords(problem, intervention_type, description):
     """Extract relevant keywords"""
     keywords = []
-    
-    # Add problem types
     if isinstance(problem, str):
         keywords.extend(problem.lower().split())
-    
-    # Add intervention types
     if isinstance(intervention_type, str):
         keywords.extend(intervention_type.lower().split())
-    
-    # Add common terms
     common_terms = ['speed', 'pedestrian', 'crossing', 'school', 'hospital', 'stop', 
                    'warning', 'mandatory', 'informatory', 'prohibitory', 'urban', 
                    'rural', 'highway', 'expressway', 'residential', 'commercial',
@@ -142,8 +134,6 @@ def infer_road_types(description, category):
             road_types.append('Residential Street')
         if 'school' in desc_lower:
             road_types.extend(['School Zone', 'Urban Arterial', 'Collector Road'])
-    
-    # Default based on category
     if not road_types:
         if isinstance(category, str):
             if 'Road Sign' in category:

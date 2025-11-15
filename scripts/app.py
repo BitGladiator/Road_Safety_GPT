@@ -2,7 +2,6 @@ import json
 import os
 import sys
 
-# Get the project root directory
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)  
 sys.path.append(parent_dir)
@@ -36,7 +35,6 @@ class RoadSafetyGPT:
     def load_system_prompt(self):
         """Load the system prompt"""
         try:
-            # Use absolute path to the prompt file
             prompt_path = os.path.join(parent_dir, 'prompts', 'system_prompt.txt')
             print(f"Looking for system prompt at: {prompt_path}")
             
