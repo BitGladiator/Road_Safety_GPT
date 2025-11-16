@@ -112,8 +112,138 @@ class RoadSafetyGPT:
             'keyword_matches': keyword_matches[:3]  
         }
 
-road_safety_gpt = RoadSafetyGPT()
 
+import sqlite3
+from datetime import datetime, date
+
+class Analytics:
+    def __init__(self, road_safety_gpt):
+        self.road_safety_gpt = road_safety_gpt
+        self.db_path = os.path.join(current_dir, 'data', 'analytics.db')
+        self.init_database()
+    
+    def init_database(self):
+        """Initialize SQLite database for analytics"""
+        os.makedirs(os.path.dirname(self.db_path), exist_ok=True)
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS user_queries (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                user_query TEXT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                matched_interventions_count INTEGER,
+                response_time FLOAT
+            )
+        ''')
+        
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS query_interventions (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                query_id INTEGER,
+                intervention_id TEXT,
+                intervention_name TEXT,
+                problem_type TEXT,
+                category TEXT,
+                match_score INTEGER,
+                FOREIGN KEY (query_id) REFERENCES user_queries (id)
+            )
+        ''')
+        conn.commit()
+        conn.close()
+    
+    def log_query(self, user_query, matched_interventions, response_time):
+        """Log each user query and matched interventions from your main database"""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+        
+        cursor.execute('''
+            INSERT INTO user_queries (user_query, matched_interventions_count, response_time)
+            VALUES (?, ?, ?)
+        ''', (user_query, len(matched_interventions), response_time))
+        
+        query_id = cursor.lastrowid
+    
+        for intervention in matched_interventions:
+            cursor.execute('''
+                INSERT INTO query_interventions (query_id, intervention_id, intervention_name, problem_type, category)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (query_id, 
+                  intervention.get('intervention_id', ''),
+                  intervention.get('intervention_name', ''),
+                  intervention.get('problem_type', ''),
+                  intervention.get('category', '')))
+        
+        conn.commit()
+        conn.close()
+    
+    def get_dashboard_stats(self):
+        """Get analytics based on your actual interventions database"""
+        conn = sqlite3.connect(self.db_path)
+        cursor = conn.cursor()
+
+        cursor.execute('SELECT COUNT(*) FROM user_queries')
+        total_reports = cursor.fetchone()[0]
+    
+        cursor.execute('''
+            SELECT problem_type, COUNT(*) as count 
+            FROM query_interventions 
+            GROUP BY problem_type 
+            ORDER BY count DESC 
+            LIMIT 5
+        ''')
+        top_problems = [{'problem_type': row[0], 'count': row[1]} for row in cursor.fetchall()]
+        
+        cursor.execute('''
+            SELECT category, COUNT(*) as count 
+            FROM query_interventions 
+            GROUP BY category 
+            ORDER BY count DESC 
+            LIMIT 5
+        ''')
+        top_categories = [{'category': row[0], 'count': row[1]} for row in cursor.fetchall()]
+        
+        cursor.execute('''
+            SELECT intervention_name, COUNT(*) as count 
+            FROM query_interventions 
+            GROUP BY intervention_name 
+            ORDER BY count DESC 
+            LIMIT 10
+        ''')
+        top_interventions = [{'intervention': row[0], 'count': row[1]} for row in cursor.fetchall()]
+        
+        cursor.execute('''
+            SELECT DATE(timestamp) as date, COUNT(*) as count 
+            FROM user_queries 
+            WHERE timestamp >= date('now', '-7 days')
+            GROUP BY DATE(timestamp) 
+            ORDER BY date
+        ''')
+        daily_reports = [{'date': row[0], 'count': row[1]} for row in cursor.fetchall()]
+        
+        cursor.execute('''
+            SELECT user_query, COUNT(*) as count 
+            FROM user_queries 
+            GROUP BY user_query 
+            ORDER BY count DESC 
+            LIMIT 10
+        ''')
+        common_issues = [{'issue': row[0], 'count': row[1]} for row in cursor.fetchall()]
+        
+        conn.close()
+        
+        return {
+            'total_reports': total_reports,
+            'top_problems': top_problems,
+            'top_categories': top_categories,
+            'top_interventions': top_interventions,
+            'daily_reports': daily_reports,
+            'common_issues': common_issues,
+            'total_interventions_in_db': len(self.road_safety_gpt.database) 
+        }
+road_safety_gpt = RoadSafetyGPT()
+analytics = Analytics(road_safety_gpt)
 @app.route('/')
 def index():
     """Render the main chat interface"""
@@ -125,20 +255,26 @@ def index():
 def chat():
     """Handle chat requests"""
     try:
+        start_time = datetime.now()
         data = request.get_json()
         user_message = data.get('message', '').strip()
         
         if not user_message:
             return jsonify({'error': 'Empty message'}), 400
-        
+    
         result = road_safety_gpt.get_response(user_message)
         response_text = result['ai_response']
+        
         if result['keyword_matches']:
             response_text += "\n\n**Quick Reference Matches:**\n"
             for i, match in enumerate(result['keyword_matches'], 1):
                 response_text += f"\n{i}. **{match['intervention_name']}** ({match['category']})\n"
                 response_text += f"   - Problem: {match['problem_type']}\n"
                 response_text += f"   - Standard: {match['standard_code']} {match['clause']}\n"
+        
+       
+        response_time = (datetime.now() - start_time).total_seconds()
+        analytics.log_query(user_message, result['keyword_matches'], response_time)
         
         if 'chat_history' not in session:
             session['chat_history'] = []
@@ -157,7 +293,6 @@ def chat():
     
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 @app.route('/api/clear', methods=['POST'])
 def clear_chat():
     """Clear chat history"""
@@ -196,6 +331,43 @@ def debug_query():
         'keyword_matches_count': len(keyword_matches),
         'keyword_matches_sample': [match['intervention_name'] for match in keyword_matches[:3]] if keyword_matches else []
     })
+@app.route('/api/analytics/dashboard')
+def get_dashboard_stats():
+    """Get dashboard statistics based on YOUR interventions database"""
+    stats = analytics.get_dashboard_stats()
+    return jsonify(stats)
+
+@app.route('/api/analytics/interventions-usage')
+def get_interventions_usage():
+    """Get how often interventions from YOUR database are being recommended"""
+    conn = sqlite3.connect(analytics.db_path)
+    cursor = conn.cursor()
+    
+    cursor.execute('''
+        SELECT 
+            qi.intervention_name,
+            qi.problem_type,
+            qi.category,
+            COUNT(*) as usage_count,
+            i.description as intervention_description
+        FROM query_interventions qi
+        GROUP BY qi.intervention_name, qi.problem_type, qi.category
+        ORDER BY usage_count DESC
+        LIMIT 15
+    ''')
+    
+    interventions_usage = []
+    for row in cursor.fetchall():
+        interventions_usage.append({
+            'intervention_name': row[0],
+            'problem_type': row[1],
+            'category': row[2],
+            'usage_count': row[3],
+            'description': row[4] if row[4] else "No description available"
+        })
+    
+    conn.close()
+    return jsonify({'interventions_usage': interventions_usage})
 
 if __name__ == '__main__':
     print("=" * 60)

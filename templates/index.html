@@ -1,309 +1,394 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Road Safety GPT</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        :root {
-            --primary: #10a37f;
-            --primary-dark: #0d8c6c;
-            --bg-dark: #343541;
-            --bg-darker: #202123;
-            --bg-message: #444654;
-            --text-light: #ffffff;
-            --text-muted: #9ca3af;
-            --border: #4b5563;
-        }
+      :root {
+        --primary: #10a37f;
+        --primary-dark: #0d8c6c;
+        --bg-dark: #343541;
+        --bg-darker: #202123;
+        --bg-message: #444654;
+        --text-light: #ffffff;
+        --text-muted: #9ca3af;
+        --border: #4b5563;
+      }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-light);
-            height: 100vh;
-            display: flex;
-        }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: var(--bg-dark);
+        color: var(--text-light);
+        height: 100vh;
+        display: flex;
+      }
 
-        /* Sidebar */
-        .sidebar {
-            width: 260px;
-            background: var(--bg-darker);
-            padding: 16px;
-            border-right: 1px solid var(--border);
-        }
+      /* Sidebar */
+      .sidebar {
+        width: 260px;
+        background: var(--bg-darker);
+        padding: 16px;
+        border-right: 1px solid var(--border);
+        display: flex;
+        flex-direction: column;
+      }
 
-        .new-chat {
-            width: 100%;
-            padding: 12px;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            color: var(--text-light);
-            cursor: pointer;
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
+      .sidebar-header {
+        margin-bottom: 16px;
+      }
 
-        .new-chat:hover {
-            background: rgba(255,255,255,0.1);
-        }
+      .nav-button {
+        width: 100%;
+        padding: 12px;
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: var(--text-light);
+        cursor: pointer;
+        margin-bottom: 8px;
+        font-size: 14px;
+        text-align: center;
+      }
 
-        .history {
-            margin-top: 20px;
-        }
+      .nav-button:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-        .history-item {
-            padding: 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
+      .nav-button.active {
+        background: var(--primary);
+        border-color: var(--primary);
+      }
 
-        .history-item:hover {
-            background: rgba(255,255,255,0.1);
-        }
+      .history {
+        margin-top: 20px;
+        flex: 1;
+        overflow-y: auto;
+      }
 
-        /* Main Chat */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
-        }
+      .history-item {
+        padding: 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text-muted);
+        margin-bottom: 4px;
+      }
 
-        .header {
-            padding: 16px;
-            border-bottom: 1px solid var(--border);
-            text-align: center;
-        }
+      .history-item:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
 
-        .header h1 {
-            font-size: 18px;
-            color: var(--primary);
-        }
+      /* Main Content */
+      .main {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+      }
 
-        .messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 20px;
-        }
+      .header {
+        padding: 16px;
+        border-bottom: 1px solid var(--border);
+        text-align: center;
+      }
 
-        .message {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 24px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+      .header h1 {
+        font-size: 18px;
+        color: var(--primary);
+      }
 
-        .message.user {
-            flex-direction: row-reverse;
-        }
+      /* Chat Styles */
+      .messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+      }
 
-        .avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
+      .message {
+        display: flex;
+        gap: 16px;
+        margin-bottom: 24px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+      }
 
-        .user .avatar {
-            background: var(--primary);
-        }
+      .message.user {
+        flex-direction: row-reverse;
+      }
 
-        .assistant .avatar {
-            background: #6d28d9;
-        }
+      .avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
 
-        .avatar svg {
-            width: 18px;
-            height: 18px;
-            fill: white;
-        }
+      .user .avatar {
+        background: var(--primary);
+      }
 
-        .content {
-            background: var(--bg-message);
-            padding: 16px;
-            border-radius: 8px;
-            line-height: 1.5;
-            flex: 1;
-        }
+      .assistant .avatar {
+        background: #6d28d9;
+      }
 
-        .user .content {
-            background: var(--primary);
-        }
+      .avatar svg {
+        width: 18px;
+        height: 18px;
+        fill: white;
+      }
 
-        /* Input */
-        .input-area {
-            padding: 20px;
-            border-top: 1px solid var(--border);
-        }
+      .content {
+        background: var(--bg-message);
+        padding: 16px;
+        border-radius: 8px;
+        line-height: 1.5;
+        flex: 1;
+      }
 
-        .input-container {
-            max-width: 800px;
-            margin: 0 auto;
-            position: relative;
-        }
+      .user .content {
+        background: var(--primary);
+      }
 
-        #userInput {
-            width: 100%;
-            padding: 12px 50px 12px 16px;
-            background: var(--bg-darker);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-light);
-            font-size: 15px;
-            resize: none;
-            min-height: 56px;
-            outline: none;
-        }
+      /* Dashboard Styles */
+      .dashboard {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        display: none;
+      }
 
-        #userInput:focus {
-            border-color: var(--primary);
-        }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 24px;
+      }
 
-        #sendBtn {
-            position: absolute;
-            right: 12px;
-            bottom: 12px;
-            background: var(--primary);
-            border: none;
-            border-radius: 4px;
-            width: 32px;
-            height: 32px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .stat-card {
+        background: var(--bg-message);
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+      }
 
-        #sendBtn:hover:not(:disabled) {
-            background: var(--primary-dark);
-        }
+      .stat-number {
+        font-size: 2em;
+        font-weight: bold;
+        color: var(--primary);
+        margin: 8px 0;
+      }
 
-        #sendBtn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+      .stat-label {
+        color: var(--text-muted);
+        font-size: 0.9em;
+      }
 
-        #sendBtn svg {
-            width: 18px;
-            height: 18px;
-            fill: white;
-        }
+      .chart-container {
+        background: var(--bg-message);
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+      }
 
-        /* Welcome Screen */
-        .welcome {
-            text-align: center;
-            padding: 60px 20px;
-        }
+      .chart-container h3 {
+        margin-bottom: 16px;
+        color: var(--primary);
+      }
 
-        .welcome h2 {
-            font-size: 28px;
-            margin-bottom: 16px;
-            color: var(--primary);
-        }
+      .interventions-list {
+        max-height: 300px;
+        overflow-y: auto;
+      }
 
-        .welcome p {
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            font-size: 16px;
-        }
+      .intervention-item {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: between;
+      }
 
-        .suggestions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+      .intervention-item:last-child {
+        border-bottom: none;
+      }
 
-        .suggestion {
-            padding: 16px;
-            background: var(--bg-darker);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-light);
-            cursor: pointer;
-            text-align: left;
-            font-size: 14px;
-        }
+      /* Input Area */
+      .input-area {
+        padding: 20px;
+        border-top: 1px solid var(--border);
+      }
 
-        .suggestion:hover {
-            border-color: var(--primary);
-        }
+      .input-container {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+      }
 
-        /* Loading */
-        .loading {
-            display: none;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            padding: 20px;
-        }
+      #userInput {
+        width: 100%;
+        padding: 12px 50px 12px 16px;
+        background: var(--bg-darker);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-light);
+        font-size: 15px;
+        resize: none;
+        min-height: 56px;
+        outline: none;
+      }
 
-        .loading.active {
-            display: flex;
-        }
+      #userInput:focus {
+        border-color: var(--primary);
+      }
 
-        .dots {
-            display: flex;
-            gap: 4px;
-        }
+      #sendBtn {
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+        background: var(--primary);
+        border: none;
+        border-radius: 4px;
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-        .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--text-muted);
-            border-radius: 50%;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
+      #sendBtn:hover:not(:disabled) {
+        background: var(--primary-dark);
+      }
 
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
+      #sendBtn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
 
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0.8); }
-            40% { transform: scale(1); }
-        }
+      #sendBtn svg {
+        width: 18px;
+        height: 18px;
+        fill: white;
+      }
 
-        /* Scrollbar */
-        .messages::-webkit-scrollbar {
-            width: 6px;
-        }
+      /* Welcome Screen */
+      .welcome {
+        text-align: center;
+        padding: 60px 20px;
+      }
 
-        .messages::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 3px;
-        }
+      .welcome h2 {
+        font-size: 28px;
+        margin-bottom: 16px;
+        color: var(--primary);
+      }
+
+      .welcome p {
+        color: var(--text-muted);
+        margin-bottom: 40px;
+        font-size: 16px;
+      }
+
+      .suggestions {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .suggestion {
+        padding: 16px;
+        background: var(--bg-darker);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--text-light);
+        cursor: pointer;
+        text-align: left;
+        font-size: 14px;
+      }
+
+      .suggestion:hover {
+        border-color: var(--primary);
+      }
+
+      /* Loading */
+      .loading {
+        display: none;
+        justify-content: center;
+        align-items: center;
+        gap: 12px;
+        padding: 20px;
+      }
+
+      .loading.active {
+        display: flex;
+      }
+
+      .dots {
+        display: flex;
+        gap: 4px;
+      }
+
+      .dot {
+        width: 6px;
+        height: 6px;
+        background: var(--text-muted);
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out;
+      }
+
+      .dot:nth-child(1) { animation-delay: -0.32s; }
+      .dot:nth-child(2) { animation-delay: -0.16s; }
+
+      @keyframes bounce {
+        0%, 80%, 100% { transform: scale(0.8); }
+        40% { transform: scale(1); }
+      }
+
+      /* Scrollbar */
+      .messages::-webkit-scrollbar,
+      .dashboard::-webkit-scrollbar,
+      .history::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .messages::-webkit-scrollbar-thumb,
+      .dashboard::-webkit-scrollbar-thumb,
+      .history::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
     </style>
 </head>
 <body>
     <div class="sidebar">
-        <button class="new-chat" onclick="newChat()">
-            + New Chat
-        </button>
-        <div class="history" id="historyList">
+        <div class="sidebar-header">
+            <button class="nav-button active" onclick="showChat()">Chat</button>
+            <button class="nav-button" onclick="showDashboard()">Analytics</button>
         </div>
+        <button class="nav-button" onclick="newChat()">+ New Chat</button>
+        <div class="history" id="historyList"></div>
     </div>
+
     <div class="main">
         <div class="header">
             <h1>Road Safety GPT</h1>
         </div>
 
+        <!-- Chat Interface -->
         <div class="messages" id="messagesContainer">
             <div class="welcome">
                 <h2>Road Safety Assistant</h2>
@@ -325,6 +410,43 @@
             </div>
         </div>
 
+        <!-- Dashboard Interface -->
+        <div class="dashboard" id="dashboardContainer">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Total Reports</div>
+                    <div class="stat-number" id="totalReports">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Interventions in DB</div>
+                    <div class="stat-number" id="totalInterventions">0</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Top Category</div>
+                    <div class="stat-number" id="topCategory">-</div>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3>Most Common Problem Types</h3>
+                <canvas id="problemsChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Top Intervention Categories</h3>
+                <canvas id="categoriesChart"></canvas>
+            </div>
+
+            <div class="chart-container">
+                <h3>Most Recommended Interventions</h3>
+                <div class="interventions-list" id="interventionsList">
+                    <div style="text-align: center; color: var(--text-muted); padding: 20px;">
+                        Loading interventions data...
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="loading" id="loadingIndicator">
             <div class="dots">
                 <div class="dot"></div>
@@ -336,15 +458,15 @@
 
         <div class="input-area">
             <div class="input-container">
-                <textarea 
-                    id="userInput" 
-                    placeholder="Describe the road safety problem..." 
+                <textarea
+                    id="userInput"
+                    placeholder="Describe the road safety problem..."
                     rows="1"
                     onkeydown="handleKeyPress(event)"
                 ></textarea>
                 <button id="sendBtn" onclick="sendMessage()">
                     <svg viewBox="0 0 24 24">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
                     </svg>
                 </button>
             </div>
@@ -353,75 +475,144 @@
 
     <script>
         const icons = {
-            user: `<svg viewBox="0 0 24 24">
-                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-            </svg>`,
-            
-            assistant: `<svg viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/>
-            </svg>`
+            user: `<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>`,
+            assistant: `<svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>`
         };
 
         let chatHistory = [];
+        let problemsChart = null;
+        let categoriesChart = null;
 
-        async function sendMessage() {
-            const input = document.getElementById('userInput');
-            const message = input.value.trim();
-            
-            if (!message) return;
-            
-            document.querySelector('.welcome').style.display = 'none';
-            addMessage(message, 'user');
-            input.value = '';
-            
-            const loading = document.getElementById('loadingIndicator');
-            const sendBtn = document.getElementById('sendBtn');
-            loading.classList.add('active');
-            sendBtn.disabled = true;
-            
+        function showChat() {
+            document.querySelector('.messages').style.display = 'block';
+            document.querySelector('.dashboard').style.display = 'none';
+            document.querySelector('.input-area').style.display = 'block';
+            document.querySelectorAll('.nav-button')[0].classList.add('active');
+            document.querySelectorAll('.nav-button')[1].classList.remove('active');
+        }
+
+        function showDashboard() {
+            document.querySelector('.messages').style.display = 'none';
+            document.querySelector('.dashboard').style.display = 'block';
+            document.querySelector('.input-area').style.display = 'none';
+            document.querySelectorAll('.nav-button')[0].classList.remove('active');
+            document.querySelectorAll('.nav-button')[1].classList.add('active');
+            loadDashboard();
+        }
+
+        async function loadDashboard() {
             try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
+                const response = await fetch('/api/analytics/dashboard');
+                const data = await response.json();
+
+                // Update stats
+                document.getElementById('totalReports').textContent = data.total_reports;
+                document.getElementById('totalInterventions').textContent = data.total_interventions_in_db;
+                document.getElementById('topCategory').textContent = data.top_categories[0]?.category || '-';
+
+                // Create or update charts
+                if (problemsChart) problemsChart.destroy();
+                if (categoriesChart) categoriesChart.destroy();
+
+                if (data.top_problems?.length > 0) {
+                    problemsChart = new Chart(document.getElementById('problemsChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: data.top_problems.map(p => p.problem_type),
+                            datasets: [{
+                                data: data.top_problems.map(p => p.count),
+                                backgroundColor: ['#10a37f', '#0d8c6c', '#0a7759', '#076246', '#054d33']
+                            }]
+                        }
+                    });
+                }
+
+                if (data.top_categories?.length > 0) {
+                    categoriesChart = new Chart(document.getElementById('categoriesChart'), {
+                        type: 'bar',
+                        data: {
+                            labels: data.top_categories.map(c => c.category),
+                            datasets: [{
+                                label: 'Usage Count',
+                                data: data.top_categories.map(c => c.count),
+                                backgroundColor: '#10a37f'
+                            }]
+                        }
+                    });
+                }
+
+                // Update interventions list
+                const interventionsContainer = document.getElementById('interventionsList');
+                if (data.top_interventions?.length > 0) {
+                    interventionsContainer.innerHTML = data.top_interventions.map(intervention => 
+                        `<div class="intervention-item">
+                            <strong>${intervention.intervention}</strong>
+                            <span style="color: var(--text-muted); margin-left: auto;">${intervention.count} times</span>
+                        </div>`
+                    ).join('');
+                } else {
+                    interventionsContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No intervention data available yet</div>';
+                }
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('interventionsList').innerHTML = 
+                    '<div style="text-align: center; color: #ff6b6b; padding: 20px;">Error loading dashboard data</div>';
+            }
+        }
+
+        // Your existing chat functions remain the same
+        async function sendMessage() {
+            const input = document.getElementById("userInput");
+            const message = input.value.trim();
+            if (!message) return;
+
+            document.querySelector(".welcome").style.display = "none";
+            addMessage(message, "user");
+            input.value = "";
+
+            const loading = document.getElementById("loadingIndicator");
+            const sendBtn = document.getElementById("sendBtn");
+            loading.classList.add("active");
+            sendBtn.disabled = true;
+
+            try {
+                const response = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: message })
                 });
-                
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                
+
+                if (!response.ok) throw new Error("Network response was not ok");
                 const data = await response.json();
-                addMessage(data.response, 'assistant');
+                addMessage(data.response, "assistant");
                 addToHistory(message, data.response);
-                
             } catch (error) {
-                console.error('Error:', error);
-                addMessage('Sorry, there was an error processing your request. Please make sure Ollama is running.', 'assistant');
+                console.error("Error:", error);
+                addMessage("Sorry, there was an error processing your request. Please make sure Ollama is running.", "assistant");
             } finally {
-                loading.classList.remove('active');
+                loading.classList.remove("active");
                 sendBtn.disabled = false;
             }
         }
 
         function addMessage(text, sender) {
-            const container = document.getElementById('messagesContainer');
-            const messageDiv = document.createElement('div');
+            const container = document.getElementById("messagesContainer");
+            const messageDiv = document.createElement("div");
             messageDiv.className = `message ${sender}`;
-            
-            const avatar = document.createElement('div');
-            avatar.className = 'avatar';
+
+            const avatar = document.createElement("div");
+            avatar.className = "avatar";
             avatar.innerHTML = icons[sender];
-            
-            const content = document.createElement('div');
-            content.className = 'content';
-            if (sender === 'assistant' && typeof marked !== 'undefined') {
+
+            const content = document.createElement("div");
+            content.className = "content";
+            if (sender === "assistant" && typeof marked !== "undefined") {
                 content.innerHTML = marked.parse(text);
             } else {
                 content.textContent = text;
             }
-            
+
             messageDiv.appendChild(avatar);
             messageDiv.appendChild(content);
             container.appendChild(messageDiv);
@@ -429,25 +620,19 @@
         }
 
         function addToHistory(userMessage, assistantMessage) {
-            const historyItem = {
-                user: userMessage,
-                assistant: assistantMessage,
-                timestamp: new Date().toISOString()
-            };
-            
+            const historyItem = { user: userMessage, assistant: assistantMessage, timestamp: new Date().toISOString() };
             chatHistory.push(historyItem);
             updateHistoryUI();
         }
 
         function updateHistoryUI() {
-            const historyList = document.getElementById('historyList');
+            const historyList = document.getElementById("historyList");
             historyList.innerHTML = '<div style="color: var(--text-muted); margin-bottom: 12px;">Recent chats:</div>';
             
             chatHistory.slice().reverse().forEach((item, index) => {
-                const historyItem = document.createElement('div');
-                historyItem.className = 'history-item';
-                historyItem.textContent = `${item.user.substring(0, 25)}${item.user.length > 25 ? '...' : ''}`;
-                
+                const historyItem = document.createElement("div");
+                historyItem.className = "history-item";
+                historyItem.textContent = `${item.user.substring(0, 25)}${item.user.length > 25 ? "..." : ""}`;
                 historyItem.onclick = () => loadChatFromHistory(chatHistory.length - 1 - index);
                 historyList.appendChild(historyItem);
             });
@@ -455,54 +640,46 @@
 
         function loadChatFromHistory(index) {
             const item = chatHistory[index];
-            const container = document.getElementById('messagesContainer');
-            container.innerHTML = '';
-            document.querySelector('.welcome').style.display = 'none';
-            
-            addMessage(item.user, 'user');
-            addMessage(item.assistant, 'assistant');
+            const container = document.getElementById("messagesContainer");
+            container.innerHTML = "";
+            document.querySelector(".welcome").style.display = "none";
+            addMessage(item.user, "user");
+            addMessage(item.assistant, "assistant");
         }
 
         function newChat() {
-            const container = document.getElementById('messagesContainer');
+            const container = document.getElementById("messagesContainer");
             container.innerHTML = `
                 <div class="welcome">
                     <h2>Road Safety Assistant</h2>
                     <p>Get expert recommendations for road safety interventions based on IRC standards</p>
                     <div class="suggestions">
-                        <div class="suggestion" onclick="sendSuggestion('Damaged STOP signs at intersections')">
-                            Damaged STOP signs
-                        </div>
-                        <div class="suggestion" onclick="sendSuggestion('Faded road markings near schools')">
-                            Faded road markings
-                        </div>
-                        <div class="suggestion" onclick="sendSuggestion('Speed control in residential areas')">
-                            Speed control measures
-                        </div>
-                        <div class="suggestion" onclick="sendSuggestion('Missing warning signs on curves')">
-                            Missing warning signs
-                        </div>
+                        <div class="suggestion" onclick="sendSuggestion('Damaged STOP signs at intersections')">Damaged STOP signs</div>
+                        <div class="suggestion" onclick="sendSuggestion('Faded road markings near schools')">Faded road markings</div>
+                        <div class="suggestion" onclick="sendSuggestion('Speed control in residential areas')">Speed control measures</div>
+                        <div class="suggestion" onclick="sendSuggestion('Missing warning signs on curves')">Missing warning signs</div>
                     </div>
                 </div>
             `;
         }
 
         function sendSuggestion(text) {
-            document.getElementById('userInput').value = text;
+            document.getElementById("userInput").value = text;
             sendMessage();
         }
 
         function handleKeyPress(event) {
-            if (event.key === 'Enter' && !event.shiftKey) {
+            if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
                 sendMessage();
             }
             const textarea = event.target;
-            textarea.style.height = 'auto';
-            textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+            textarea.style.height = "auto";
+            textarea.style.height = Math.min(textarea.scrollHeight, 120) + "px";
         }
+
         window.onload = () => {
-            document.getElementById('userInput').focus();
+            document.getElementById("userInput").focus();
         };
     </script>
 </body>
