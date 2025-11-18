@@ -132,7 +132,7 @@
 
         <div class="report-actions">
             <div class="report-card">
-                <h3>📊 PDF Compliance Report</h3>
+                <h3>PDF Compliance Report</h3>
                 <p>Generate a detailed PDF report with compliance analysis and recommendations</p>
                 <button class="btn" onclick="generatePDFReport()">Generate PDF Report</button>
                 <div class="loading" id="pdfLoading">
@@ -146,7 +146,7 @@
             </div>
 
             <div class="report-card">
-                <h3>📈 Excel Analytics Report</h3>
+                <h3>Excel Analytics Report</h3>
                 <p>Export data to Excel with charts, cost estimations, and priority rankings</p>
                 <button class="btn" onclick="generateExcelReport()">Generate Excel Report</button>
                 <div class="loading" id="excelLoading">
@@ -160,7 +160,7 @@
             </div>
 
             <div class="report-card">
-                <h3>🎯 Priority Analysis</h3>
+                <h3>Priority Analysis</h3>
                 <p>View interventions ranked by priority with cost and timeline estimates</p>
                 <button class="btn" onclick="loadPriorityRanking()">Load Priority Ranking</button>
                 <div class="loading" id="priorityLoading">
@@ -191,7 +191,6 @@
                 
                 if (data.success) {
                     alert('PDF report generated successfully!');
-                    // In a real app, you might want to download the file
                 } else {
                     alert('Error: ' + data.error);
                 }
