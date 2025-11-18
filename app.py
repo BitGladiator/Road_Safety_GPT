@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session
+from reports import ReportGenerator
 import json
 import os
 import sys
@@ -305,7 +306,111 @@ def get_history():
     """Get chat history"""
     history = session.get('chat_history', [])
     return jsonify({'history': history})
+# Report Generation Routes
+@app.route('/api/generate-pdf-report')
+def generate_pdf_report():
+    """Generate PDF report"""
+    try:
+        generator = ReportGenerator('data')
+        pdf_path = generator.generate_pdf_report()
+        
+        return jsonify({
+            'success': True,
+            'message': 'PDF report generated successfully',
+            'file_path': pdf_path
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
 
+@app.route('/api/generate-excel-report')
+def generate_excel_report():
+    """Generate Excel report"""
+    try:
+        generator = ReportGenerator('data')
+        excel_path = generator.generate_excel_report()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Excel report generated successfully',
+            'file_path': excel_path
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/api/generate-compliance-checklist', methods=['POST'])
+def generate_compliance_checklist():
+    """Generate compliance checklist for interventions"""
+    try:
+        data = request.get_json()
+        interventions = data.get('interventions', [])
+        
+        generator = ReportGenerator('data')
+        checklist = generator.generate_compliance_checklist(interventions)
+        
+        return jsonify({
+            'success': True,
+            'checklist': checklist
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+@app.route('/reports')
+def reports_page():
+    """Render reports page"""
+    return render_template('reports.html')
+
+@app.route('/api/analytics/priority-ranking')
+def get_priority_ranking():
+    """Get interventions with priority ranking"""
+    try:
+        # Load interventions from database
+        with open('data/processed_database.json', 'r') as f:
+            interventions = json.load(f)
+        
+        # Add priority and cost estimation
+        for intervention in interventions[:10]:  # Limit to top 10 for demo
+            intervention['priority'] = calculate_priority(intervention)
+            intervention['estimated_cost'] = estimate_cost(intervention)
+            intervention['timeline'] = estimate_timeline(intervention)
+        
+        return jsonify({
+            'success': True,
+            'interventions': interventions[:10]
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'error': str(e)})
+
+def calculate_priority(intervention):
+    """Calculate priority based on intervention type"""
+    priority_map = {
+        'Traffic Signs': 'High',
+        'Road Markings': 'Medium',
+        'Pedestrian Facilities': 'High',
+        'Speed Management': 'High',
+        'Lighting': 'Medium',
+        'Drainage': 'Low'
+    }
+    return priority_map.get(intervention.get('category', ''), 'Medium')
+
+def estimate_cost(intervention):
+    """Estimate cost based on intervention type"""
+    cost_ranges = {
+        'High': '₹2,00,000 - ₹10,00,000',
+        'Medium': '₹50,000 - ₹2,00,000',
+        'Low': '₹5,000 - ₹50,000'
+    }
+    priority = calculate_priority(intervention)
+    return cost_ranges.get(priority, '₹50,000 - ₹2,00,000')
+
+def estimate_timeline(intervention):
+    """Estimate timeline based on priority"""
+    timeline_map = {
+        'High': '1-2 weeks',
+        'Medium': '2-4 weeks',
+        'Low': '4-8 weeks'
+    }
+    priority = calculate_priority(intervention)
+    return timeline_map.get(priority, '2-4 weeks')
 @app.route('/api/status', methods=['GET'])
 def status():
     """Check system status"""
