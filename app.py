@@ -3,6 +3,7 @@ from reports import ReportGenerator
 import json
 import os
 import sys
+from flask import send_file
 from datetime import datetime
 import secrets
 
@@ -309,33 +310,38 @@ def get_history():
 # Report Generation Routes
 @app.route('/api/generate-pdf-report')
 def generate_pdf_report():
-    """Generate PDF report"""
+    """Generate and download PDF report"""
     try:
         generator = ReportGenerator('data')
         pdf_path = generator.generate_pdf_report()
         
-        return jsonify({
-            'success': True,
-            'message': 'PDF report generated successfully',
-            'file_path': pdf_path
-        })
+        # Return the file for download
+        return send_file(
+            pdf_path,
+            as_attachment=True,
+            download_name=f"road_safety_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.pdf",
+            mimetype='application/pdf'
+        )
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
 
 @app.route('/api/generate-excel-report')
 def generate_excel_report():
-    """Generate Excel report"""
+    """Generate and download Excel report"""
     try:
         generator = ReportGenerator('data')
         excel_path = generator.generate_excel_report()
         
-        return jsonify({
-            'success': True,
-            'message': 'Excel report generated successfully',
-            'file_path': excel_path
-        })
+        # Return the file for download
+        return send_file(
+            excel_path,
+            as_attachment=True,
+            download_name=f"road_safety_report_{datetime.now().strftime('%Y%m%d_%H%M%S')}.xlsx",
+            mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+        )
     except Exception as e:
         return jsonify({'success': False, 'error': str(e)})
+
 
 @app.route('/api/generate-compliance-checklist', methods=['POST'])
 def generate_compliance_checklist():
