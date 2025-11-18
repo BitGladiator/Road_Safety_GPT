@@ -8,7 +8,7 @@ from reportlab.lib import colors
 from reportlab.lib.units import inch
 import openpyxl
 from openpyxl.styles import Font, Alignment, PatternFill
-from openpyxl.chart import PieChart, BarChart, Reference
+from openpyxl.utils import get_column_letter
 import sqlite3
 
 class ReportGenerator:
@@ -167,8 +167,7 @@ class ReportGenerator:
         ws_summary = wb.active
         ws_summary.title = "Summary"
         
-        # Header
-        ws_summary.merge_cells('A1:D1')
+        # Header - Don't merge cells to avoid the error
         ws_summary['A1'] = "Road Safety Interventions Analytics Report"
         ws_summary['A1'].font = Font(size=16, bold=True, color='FF10A37F')
         ws_summary['A1'].alignment = Alignment(horizontal='center')
@@ -180,7 +179,8 @@ class ReportGenerator:
         
         # Top Interventions Sheet
         ws_interventions = wb.create_sheet("Top Interventions")
-        ws_interventions.append(['Intervention', 'Recommendation Count', 'Priority Level', 'Estimated Cost'])
+        headers = ['Intervention', 'Recommendation Count', 'Priority Level', 'Estimated Cost']
+        ws_interventions.append(headers)
         
         # Add sample cost estimation and priority
         cost_ranges = {
@@ -209,14 +209,15 @@ class ReportGenerator:
             ])
         
         # Style the interventions sheet
-        for row in ws_interventions.iter_rows(min_row=1, max_row=1):
-            for cell in row:
-                cell.font = Font(bold=True, color='FFFFFF')
-                cell.fill = PatternFill(start_color='10A37F', end_color='10A37F', fill_type='solid')
+        for col in range(1, len(headers) + 1):
+            cell = ws_interventions.cell(row=1, column=col)
+            cell.font = Font(bold=True, color='FFFFFF')
+            cell.fill = PatternFill(start_color='10A37F', end_color='10A37F', fill_type='solid')
         
         # Problem Types Sheet
         ws_problems = wb.create_sheet("Problem Types")
-        ws_problems.append(['Problem Type', 'Occurrence Count', 'Severity Level'])
+        problem_headers = ['Problem Type', 'Occurrence Count', 'Severity Level']
+        ws_problems.append(problem_headers)
         
         for problem in data['problem_types']:
             # Severity based on occurrence
@@ -230,25 +231,25 @@ class ReportGenerator:
             ws_problems.append([problem['name'], problem['count'], severity])
         
         # Style problems sheet
-        for row in ws_problems.iter_rows(min_row=1, max_row=1):
-            for cell in row:
-                cell.font = Font(bold=True, color='FFFFFF')
-                cell.fill = PatternFill(start_color='0D8C6C', end_color='0D8C6C', fill_type='solid')
+        for col in range(1, len(problem_headers) + 1):
+            cell = ws_problems.cell(row=1, column=col)
+            cell.font = Font(bold=True, color='FFFFFF')
+            cell.fill = PatternFill(start_color='0D8C6C', end_color='0D8C6C', fill_type='solid')
         
-        # Auto-adjust column widths
-        for sheet in wb.sheetnames:
-            ws = wb[sheet]
-            for column in ws.columns:
+        # Auto-adjust column widths (FIXED VERSION)
+        for sheet_name in wb.sheetnames:
+            ws = wb[sheet_name]
+            for column_cells in ws.columns:
                 max_length = 0
-                column_letter = column[0].column_letter
-                for cell in column:
+                column = column_cells[0].column_letter  # Get column letter from first cell
+                for cell in column_cells:
                     try:
                         if len(str(cell.value)) > max_length:
                             max_length = len(str(cell.value))
                     except:
                         pass
-                adjusted_width = (max_length + 2)
-                ws.column_dimensions[column_letter].width = adjusted_width
+                adjusted_width = min(max_length + 2, 50)  # Cap at 50
+                ws.column_dimensions[column].width = adjusted_width
         
         wb.save(output_path)
         return output_path
@@ -286,14 +287,3 @@ class ReportGenerator:
         }
         
         return priority_factors.get(intervention['category'], 'Medium')
-
-# Example usage
-if __name__ == "__main__":
-    generator = ReportGenerator()
-    
-    # Generate sample reports
-    pdf_path = generator.generate_pdf_report()
-    excel_path = generator.generate_excel_report()
-    
-    print(f"PDF report generated: {pdf_path}")
-    print(f"Excel report generated: {excel_path}")
