@@ -4,7 +4,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <title>Road Safety GPT</title>
     <style>
       * {
@@ -162,7 +161,7 @@
         background: var(--primary);
       }
 
-      /* Dashboard Styles */
+      /* Dashboard Styles - SIMPLIFIED */
       .dashboard {
         flex: 1;
         overflow-y: auto;
@@ -172,56 +171,81 @@
 
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 12px;
         margin-bottom: 24px;
       }
 
       .stat-card {
         background: var(--bg-message);
-        padding: 20px;
+        padding: 16px;
         border-radius: 8px;
         text-align: center;
+        border-left: 4px solid var(--primary);
       }
 
       .stat-number {
-        font-size: 2em;
+        font-size: 1.5em;
         font-weight: bold;
         color: var(--primary);
-        margin: 8px 0;
+        margin: 4px 0;
       }
 
       .stat-label {
         color: var(--text-muted);
-        font-size: 0.9em;
+        font-size: 0.8em;
       }
 
-      .chart-container {
+      .analytics-section {
         background: var(--bg-message);
-        padding: 20px;
+        padding: 16px;
         border-radius: 8px;
         margin-bottom: 16px;
       }
 
-      .chart-container h3 {
-        margin-bottom: 16px;
+      .analytics-section h3 {
+        margin-bottom: 12px;
         color: var(--primary);
+        font-size: 1em;
       }
 
-      .interventions-list {
-        max-height: 300px;
-        overflow-y: auto;
-      }
-
-      .intervention-item {
-        padding: 12px;
-        border-bottom: 1px solid var(--border);
+      .problem-list, .category-list, .intervention-list {
         display: flex;
-        justify-content: between;
+        flex-direction: column;
+        gap: 8px;
       }
 
-      .intervention-item:last-child {
+      .list-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .list-item:last-child {
         border-bottom: none;
+      }
+
+      .item-name {
+        flex: 1;
+        font-size: 0.9em;
+      }
+
+      .item-count {
+        color: var(--primary);
+        font-weight: bold;
+        font-size: 0.9em;
+        background: rgba(16, 163, 127, 0.1);
+        padding: 2px 8px;
+        border-radius: 12px;
+      }
+
+      .empty-state {
+        text-align: center;
+        color: var(--text-muted);
+        padding: 20px;
+        font-size: 0.9em;
       }
 
       /* Input Area */
@@ -410,7 +434,7 @@
             </div>
         </div>
 
-        <!-- Dashboard Interface -->
+     
         <div class="dashboard" id="dashboardContainer">
             <div class="stats-grid">
                 <div class="stat-card">
@@ -427,22 +451,24 @@
                 </div>
             </div>
 
-            <div class="chart-container">
-                <h3>Most Common Problem Types</h3>
-                <canvas id="problemsChart"></canvas>
+            <div class="analytics-section">
+                <h3>Most Common Problems</h3>
+                <div class="problem-list" id="problemsList">
+                    <div class="empty-state">No data available</div>
+                </div>
             </div>
 
-            <div class="chart-container">
-                <h3>Top Intervention Categories</h3>
-                <canvas id="categoriesChart"></canvas>
+            <div class="analytics-section">
+                <h3>Top Categories</h3>
+                <div class="category-list" id="categoriesList">
+                    <div class="empty-state">No data available</div>
+                </div>
             </div>
 
-            <div class="chart-container">
-                <h3>Most Recommended Interventions</h3>
-                <div class="interventions-list" id="interventionsList">
-                    <div style="text-align: center; color: var(--text-muted); padding: 20px;">
-                        Loading interventions data...
-                    </div>
+            <div class="analytics-section">
+                <h3>Most Recommended</h3>
+                <div class="intervention-list" id="interventionsList">
+                    <div class="empty-state">No data available</div>
                 </div>
             </div>
         </div>
@@ -480,8 +506,6 @@
         };
 
         let chatHistory = [];
-        let problemsChart = null;
-        let categoriesChart = null;
 
         function showChat() {
             document.querySelector('.messages').style.display = 'block';
@@ -505,63 +529,59 @@
                 const response = await fetch('/api/analytics/dashboard');
                 const data = await response.json();
 
-                // Update stats
-                document.getElementById('totalReports').textContent = data.total_reports;
-                document.getElementById('totalInterventions').textContent = data.total_interventions_in_db;
+    
+                document.getElementById('totalReports').textContent = data.total_reports || 0;
+                document.getElementById('totalInterventions').textContent = data.total_interventions_in_db || 0;
                 document.getElementById('topCategory').textContent = data.top_categories[0]?.category || '-';
 
-                // Create or update charts
-                if (problemsChart) problemsChart.destroy();
-                if (categoriesChart) categoriesChart.destroy();
-
+               
+                const problemsList = document.getElementById('problemsList');
                 if (data.top_problems?.length > 0) {
-                    problemsChart = new Chart(document.getElementById('problemsChart'), {
-                        type: 'doughnut',
-                        data: {
-                            labels: data.top_problems.map(p => p.problem_type),
-                            datasets: [{
-                                data: data.top_problems.map(p => p.count),
-                                backgroundColor: ['#10a37f', '#0d8c6c', '#0a7759', '#076246', '#054d33']
-                            }]
-                        }
-                    });
-                }
-
-                if (data.top_categories?.length > 0) {
-                    categoriesChart = new Chart(document.getElementById('categoriesChart'), {
-                        type: 'bar',
-                        data: {
-                            labels: data.top_categories.map(c => c.category),
-                            datasets: [{
-                                label: 'Usage Count',
-                                data: data.top_categories.map(c => c.count),
-                                backgroundColor: '#10a37f'
-                            }]
-                        }
-                    });
-                }
-
-                // Update interventions list
-                const interventionsContainer = document.getElementById('interventionsList');
-                if (data.top_interventions?.length > 0) {
-                    interventionsContainer.innerHTML = data.top_interventions.map(intervention => 
-                        `<div class="intervention-item">
-                            <strong>${intervention.intervention}</strong>
-                            <span style="color: var(--text-muted); margin-left: auto;">${intervention.count} times</span>
+                    problemsList.innerHTML = data.top_problems.map(problem => 
+                        `<div class="list-item">
+                            <span class="item-name">${problem.problem_type}</span>
+                            <span class="item-count">${problem.count}</span>
                         </div>`
                     ).join('');
                 } else {
-                    interventionsContainer.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 20px;">No intervention data available yet</div>';
+                    problemsList.innerHTML = '<div class="empty-state">No problem data available</div>';
+                }
+
+               
+                const categoriesList = document.getElementById('categoriesList');
+                if (data.top_categories?.length > 0) {
+                    categoriesList.innerHTML = data.top_categories.map(category => 
+                        `<div class="list-item">
+                            <span class="item-name">${category.category}</span>
+                            <span class="item-count">${category.count}</span>
+                        </div>`
+                    ).join('');
+                } else {
+                    categoriesList.innerHTML = '<div class="empty-state">No category data available</div>';
+                }
+
+              
+                const interventionsList = document.getElementById('interventionsList');
+                if (data.top_interventions?.length > 0) {
+                    interventionsList.innerHTML = data.top_interventions.map(intervention => 
+                        `<div class="list-item">
+                            <span class="item-name">${intervention.intervention}</span>
+                            <span class="item-count">${intervention.count}</span>
+                        </div>`
+                    ).join('');
+                } else {
+                    interventionsList.innerHTML = '<div class="empty-state">No intervention data available</div>';
                 }
 
             } catch (error) {
                 console.error('Error loading dashboard:', error);
-                document.getElementById('interventionsList').innerHTML = 
-                    '<div style="text-align: center; color: #ff6b6b; padding: 20px;">Error loading dashboard data</div>';
+                document.getElementById('problemsList').innerHTML = '<div class="empty-state">Error loading data</div>';
+                document.getElementById('categoriesList').innerHTML = '<div class="empty-state">Error loading data</div>';
+                document.getElementById('interventionsList').innerHTML = '<div class="empty-state">Error loading data</div>';
             }
         }
 
-        // Your existing chat functions remain the same
+       
         async function sendMessage() {
             const input = document.getElementById("userInput");
             const message = input.value.trim();
